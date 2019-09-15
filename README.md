@@ -31,8 +31,8 @@ a. Automaticlly filtered to only provide locations which we service.
 b. Built in Handling of IATA codes for airport pickup's / dropoffs.
 c. Lower latency for Quote Generation / Reservation Creation.
 
-It is reccomended that the library https://github.com/TarekRaafat/autoComplete.js is used for the LocationFinder.
-Please see working demo under Samples/LocationFinder
+It is reccomended that a library such as https://github.com/TarekRaafat/autoComplete.js is used for the LocationFinder.
+Please see basic working demo (JQUERY) under Samples/LocationFinder
 
 AutoComplete Service
 

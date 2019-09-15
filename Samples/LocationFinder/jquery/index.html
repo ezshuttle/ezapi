@@ -1,0 +1,93 @@
+<html>
+<head>
+<TITLE>EzShuttle LocationFinder Example (JQuery)</TITLE>
+<head>
+
+<style>
+body{width:610px;}
+.frmSearch {border: 1px solid #a8d4b1;background-color: #c6f7d0;margin: 2px 0px;padding:40px;border-radius:4px;}
+#location-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+#location-list li{padding: 10px; background: #f0f0f0; border-bottom: #bbb9b9 1px solid;}
+#location-list li:hover{background:#ece3d2;cursor: pointer;}
+#search-box{padding: 10px;border: #a8d4b1 1px solid;border-radius:4px;}
+</style>
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script>
+	
+$(document).ready(function(){
+	$("#search-box").keyup(function(){
+		$.ajax({
+		type: "GET",
+		url: "https://api.ezshuttle.co.za/ezx/locationfinder/api/AutoComplete?" + "querytext=" +$(this).val() + "&sessionid=22",
+		beforeSend: function(){
+			$("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+		},
+		success: function(data){
+			console.log(data);
+			$("#suggesstion-box").show();
+			$("#location-list").empty();
+			data.forEach(element => {
+				var li = "<li onClick='%onClickFunction%'>  %body% </li>".replace('%onClickFunction%','selectLocation("%nameparam%","%pidparam%")')
+				.replace('%body%', element.displayName)
+				.replace('%nameparam%',element.displayName)
+				.replace('%pidparam%',element.googlePlaceId);
+
+				$("#location-list").append(li);
+			});
+			$("#search-box").css("background","#FFF");
+		}
+		});
+	});
+});
+
+function selectLocation(name,pid) {
+$("#search-box").val(name);
+$("#suggesstion-box").hide();
+
+$("#result_name").text(name);
+$("#result_gpid").text(pid);
+
+console.log(name);
+console.log(pid);
+
+$.ajax({
+		type: "GET",
+		url: "https://api.ezshuttle.co.za/ezx/locationfinder/api/GooglePlaceIdLookup?" + "googlePlaceId=" + pid + "&sessionid=22",
+		beforeSend: function(){
+		},
+		success: function(data){
+			console.log(data);
+			$("#result_ezpid").text(data);
+		}
+		});
+}
+
+</script>
+</head>
+<body>
+<div class="frmSearch">
+<input type="text" id="search-box" placeholder="Location Name" />
+
+<div id="suggesstion-box">
+		<ul id="location-list">
+
+		</ul>
+</div>
+
+</div>
+
+<div id="result_name">
+
+</div>
+
+<div id="result_gpid">
+
+</div>
+
+<div id="result_ezpid">
+
+</div>
+
+</body>
+</html>
