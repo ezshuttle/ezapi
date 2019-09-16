@@ -42,7 +42,8 @@ AutoComplete Service
 QueryString Parameters:
 
 querytext: (string - Query Text - required)
-sessionid: (string - Unique Session Identifier - required)
+sessionid: (string - Unique Session Identifier for Every Lookup - required)
+partnerKey: (string - Will be supplied on account creation -required)
 
 Response Json Body
 
