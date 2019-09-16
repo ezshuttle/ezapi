@@ -36,9 +36,9 @@ Please see basic working demo (JQUERY) under Samples/LocationFinder
 
 AutoComplete Service
 
-Http Verb: GET
-Headers: Content-Type: application/json
-Http EndPoint: /AutoComplete  (https://api.ezshuttle.co.za/ezx/locationfinder/api/)
+* Http Verb: GET
+* Headers: Content-Type: application/json
+* Http EndPoint: /AutoComplete  (https://api.ezshuttle.co.za/ezx/locationfinder/api/)
 QueryString Parameters:
 
 querytext: (string - Query Text - required)
@@ -69,19 +69,19 @@ EZKnYwMDEqMnwtMjYuMTY1NTA4Nzk5OTk5OTl8MjguMTQwNzkxMnwtMXw0OXw3OSBCb2VpbmcgUmQgRS
 
 Request
 
-Http Verb: GET
-Headers: Content-Type: application/json
-Http EndPoint: /QuickBookings
-QueryString Parameters:
+* Http Verb: GET
+* Headers: Content-Type: application/json
+* Http EndPoint: /QuickBookings
+* QueryString Parameters:
 
-pickupDateTime: 2019-07-29T07:00:00  (datetime - required)
-pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
-destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
-vehicleType: 1  (int - TypeCode - required)
-numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
-includeBabySeat: false  (bool - BabySeat is requested - required)
-includeTrailer: false (bool - Trailer is requested - required)
-returnPickupDateTime: 2019-08-19T08:00:00.000Z (datetime - If NULL reservation is one way only - optional)
+* pickupDateTime: 2019-07-29T07:00:00  (datetime - required)
+* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
+* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
+* vehicleType: 1  (int - TypeCode - required)
+* numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
+* includeBabySeat: false  (bool - BabySeat is requested - required)
+* includeTrailer: false (bool - Trailer is requested - required)
+* returnPickupDateTime: 2019-08-19T08:00:00.000Z (datetime - If NULL reservation is one way only - optional)
 
 Response Body 
 
