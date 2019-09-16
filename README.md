@@ -46,7 +46,7 @@ sessionid: (string - Unique Session Identifier - required)
 
 Response Json Body
 
-{"displayName":"Sandton City, Rivonia Road, Sandhurst, Sandton, South Africa","googlePlaceId":"ChIJu6K6ei1zlR4RS3iNn8RaO24"}
+`{"displayName":"Sandton City, Rivonia Road, Sandhurst, Sandton, South Africa","googlePlaceId":"ChIJu6K6ei1zlR4RS3iNn8RaO24"}`
 
 Once the Google PlaceId is obtained it needs to be converted to an EzShuttle PlaceId:
 
@@ -103,34 +103,34 @@ Http Verb: POST
 Http EndPoint: /QuickBookings
 Headers: Content-Type: application/json
 Json Body Content:
-
-{
-  "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",       // (string - Google PID OR Ezshuttle EzPID - required)
-  "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",  // (string - Google PID OR Ezshuttle EzPID - required)
-  "PickupDisplayAddress": "",                           // (string - Additional address description to be appended to Google/LocatioFinder address - optional)
-  "DestinationDisplayAdadress": "entrance 4",           // (string - Additional address description to be appended to Google/LocatioFinder address - optional)
-  "PickupFlightNumber": "FLTEST",                       // (string - Compulsory if pickup is an airport - optional, on condition)
-  "ReturnPickupFlightNumber": null,                     // (string - Compulsory if pickup is an airport on return trip - optional, on condition)
-  "PickupDateTime": "2019-07-28T07:00:00",              // (datetime UTC - required)
-  "ReturnPickupDateTime": null,                         // (datetime UTC - If NULL reservation is one way only - optional)
-  "NumberOfPassengers": 1,                              // (int - Pax, min=1;max=13 - required)
-  "VehicleType": 1,                                     // (int - TypeCode - required)
-  "IncludeBabySeat": false,                             // (bool - BabySeat is requested - required)
-  "IncludeTrailer": false,                              // (bool - Trailer is requested - required)
-  "SpecialInstructions": null,                          // (string - Special Instructions - optional)
-  "PaymentMethod": 4,                                   // (int - TypeCode 4 = Account - required)
-  "Name": "Richard",                                    // (string - Passenger FirstName - required)
-  "Surname": "McIntyre",                                // (string - Passenger Surname - required)
-  "Cell": "+27722939392",                               // (string - Passenger Mobile - required)
+```json
+`{
+  "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",       // (string - Google PID OR Ezshuttle EzPID - required) 
+  "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",  // (string - Google PID OR Ezshuttle EzPID - required) 
+  "PickupDisplayAddress": "",                           // (string - Additional address description to be appended to Google/LocatioFinder address - optional) 
+  "DestinationDisplayAdadress": "entrance 4",           // (string - Additional address description to be appended to Google/LocatioFinder address - optional) 
+  "PickupFlightNumber": "FLTEST",                       // (string - Compulsory if pickup is an airport - optional, on condition) 
+  "ReturnPickupFlightNumber": null,                     // (string - Compulsory if pickup is an airport on return trip - optional, on condition) 
+  "PickupDateTime": "2019-07-28T07:00:00",              // (datetime UTC - required) 
+  "ReturnPickupDateTime": null,                         // (datetime UTC - If NULL reservation is one way only - optional) 
+  "NumberOfPassengers": 1,                              // (int - Pax, min=1;max=13 - required) 
+  "VehicleType": 1,                                     // (int - TypeCode - required) 
+  "IncludeBabySeat": false,                             // (bool - BabySeat is requested - required) 
+  "IncludeTrailer": false,                              // (bool - Trailer is requested - required) 
+  "SpecialInstructions": null,                          // (string - Special Instructions - optional) 
+  "PaymentMethod": 4,                                   // (int - TypeCode 4 = Account - required) 
+  "Name": "Richard",                                    // (string - Passenger FirstName - required) 
+  "Surname": "McIntyre",                                // (string - Passenger Surname - required) 
+  "Cell": "+27722939392",                               // (string - Passenger Mobile - required) 
   "Email": "richard@mailinator.com",                    // (string - Passenger Email - required)
   "PurchaseOrder": "POTEST",                            // (string - Client Defined PurchaseOrder - optional)
-  "CostCentre": "COTEST",                               // (string - Special Instructions - optional)
-  "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional)
-}
-
+  "CostCentre": "COTEST",                               // (string - Special Instructions - optional) 
+  "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional) 
+}` 
+```
 Response
-
-{
+```json
+`{
     "ReferenceId": 884526,                                  // (int - EzShuttle ReferenceId)
     "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",
     "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",
@@ -155,8 +155,8 @@ Response
     "CostInCents": 50000,
     "QuoteId": null,
     "ClientReservationId": "PR884526"
-}
-
+}`
+```
 # 6 QuickBookings (Cancel)
 Http Verb: GET
 Headers: Content-Type: application/json
@@ -175,10 +175,10 @@ Http Verb: POST
 Http EndPoint: /UpdatePurchaseOrderRequest
 Headers: Content-Type: application/json
 Json Body Content:
-{
+`{
     ReferenceId: 884526
     PurchaseOrder: "My New PO"
-}
+}`
 
 Response
 
@@ -188,71 +188,71 @@ True
 
 In the case of an error an HTTP 400 error code will be returned wth the error detail in the body. For example:
 
-{
+`{
     "message": "QuickBookings => POST => Result = Error Occurred",
     "stackTrace": "",
     "errorCode": 83
-}
+}`
 
 Please examine the errorCode field to obtain the ezshuttle api error as per table below:
 
 
 # Error: Validation
 
- SMSOrEmailNotificationFailure = 46,
- BlockTripLuxuryVehicle = 47,
- BlockTripOver3Passengers = 48,
- BlockTripUnder4Passengers = 49,
- BlockTrip = 50,
- DestinationDestionationTrip = 51,
- VehicleTypeUnknown = 52,
- Trip24Hours = 53,
- NoDropOff = 54,
- NoPickup = 55,
- NoPassenger = 56,
- ParentClientInvalid = 57,
- ParentClientBooking = 58,
- InvalidClientPassenger = 59,
- PassengerNotFound = 60,
- ClientNotFound = 61,
- ReservationIdNotNull = 62,
- ReservationIsNull = 63,
- ReservationClientNoLongerExist = 64,
- ReservationNotFound= 65,
- ReservationIdNullOrZero = 66,
- NotificationTypeNotSpecified = 67,
- QuoteConvertedAlready = 68,
- TripTimeInvalid = 69,
- PickupTimeIsNull = 70,
- SuburbsOfficesInvalid = 71,
- PricePlanNotFound = 72,
- DestinationInvalid = 73,
- SuburbInvalid = 74,
- SuburbDestinationOfficesInvalid = 75,
- NoAddressSpecified = 76,
- UnauthorizedVehicleType = 77,
- CancellationDeadlineExpired=78,
- AdhocTripsInternalError=79,
- CannotCancelPaidTrip = 80,
- ReservationPaymentNotCreditCard = 81,
- TripOutOfRangeOfOffice = 82,
- TripOnlineDeadline = 83,
- JhbPtaSuburbToSuburbNotSupported = 84,
- SuburbOrDestinationNotFound = 85,
- TrailerRequiresAdditionalPax = 86,
- GeneralValidationError = 98,
- MultiTripReservationNotSupported = 300
+ * SMSOrEmailNotificationFailure = 46,
+ * BlockTripLuxuryVehicle = 47,
+ * BlockTripOver3Passengers = 48,
+ * BlockTripUnder4Passengers = 49,
+ * BlockTrip = 50,
+ * DestinationDestionationTrip = 51,
+ * VehicleTypeUnknown = 52,
+ * Trip24Hours = 53,
+ * NoDropOff = 54,
+ * NoPickup = 55,
+ * NoPassenger = 56,
+ * ParentClientInvalid = 57,
+ * ParentClientBooking = 58,
+ * InvalidClientPassenger = 59,
+ * PassengerNotFound = 60,
+ * ClientNotFound = 61,
+ * ReservationIdNotNull = 62,
+ * ReservationIsNull = 63,
+ * ReservationClientNoLongerExist = 64,
+ * ReservationNotFound= 65,
+ * ReservationIdNullOrZero = 66,
+ * NotificationTypeNotSpecified = 67,
+ * QuoteConvertedAlready = 68,
+ * TripTimeInvalid = 69,
+ * PickupTimeIsNull = 70,
+ * SuburbsOfficesInvalid = 71,
+ * PricePlanNotFound = 72,
+ * DestinationInvalid = 73,
+ * SuburbInvalid = 74,
+ * SuburbDestinationOfficesInvalid = 75,
+ * NoAddressSpecified = 76,
+ * UnauthorizedVehicleType = 77,
+ * CancellationDeadlineExpired=78,
+ * AdhocTripsInternalError=79,
+ * CannotCancelPaidTrip = 80,
+ * ReservationPaymentNotCreditCard = 81,
+ * TripOutOfRangeOfOffice = 82,
+ * TripOnlineDeadline = 83,
+ * JhbPtaSuburbToSuburbNotSupported = 84,
+ * SuburbOrDestinationNotFound = 85,
+ * TrailerRequiresAdditionalPax = 86,
+ * GeneralValidationError = 98,
+ * MultiTripReservationNotSupported = 300
 
 # Error: General
 
-GeneralError = 99,
-Unauthorized = 100,
-InternalServerError = 101,
-ResourceNotFound = 102,
-AccountBlocked = 1000
+* GeneralError = 99,
+* Unauthorized = 100,
+* InternalServerError = 101,
+* ResourceNotFound = 102,
+* AccountBlocked = 1000
 
 # Error: Process
 
-ErrorSendingSMSOrEmailNotification = 200,
-ErrorProcessingPayment = 300
+* ErrorSendingSMSOrEmailNotification = 200,
+* ErrorProcessingPayment = 300
 
