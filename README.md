@@ -75,7 +75,7 @@ Request
 
 * Http Verb: GET
 * Headers: Content-Type: application/json
-* Http EndPoint: /QuickQuotes
+* Http EndPoint: /QuickQuotes/get
 * QueryString Parameters:
 
 * pickupDateTime: 2019-07-29T07:00:00  (datetime - required)
@@ -104,7 +104,7 @@ The results include vehicle thumbnails.
 # 5 QuickBookings (Create)
 
 Http Verb: POST
-Http EndPoint: /QuickBookings
+Http EndPoint: /QuickBookings/post
 Headers: Content-Type: application/json
 Json Body Content:
 ```json
