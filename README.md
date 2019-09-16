@@ -159,7 +159,7 @@ Response
 }`
 ```
 # 6 QuickBookings (Cancel)
-* Http Verb: GET
+* Http Verb: DELETE
 * Headers: Content-Type: application/json
 * Http EndPoint: /QuickBookings
 * QueryString Parameters:
