@@ -53,13 +53,16 @@ Once the Google PlaceId is obtained it needs to be converted to an EzShuttle Pla
 
 GooglePlaceIdLookup Service
 
-Http Verb: GET
-Headers: Content-Type: application/json
-Http EndPoint: /GooglePlaceIdLookup  (https://api.ezshuttle.co.za/ezx/locationfinder/api/)
-QueryString Parameters:
+* Http Verb: GET
+* Headers: Content-Type: application/json
+* Http EndPoint: /GooglePlaceIdLookup  (https://api.ezshuttle.co.za/ezx/locationfinder/api/)
+* QueryString Parameters:
 
-googlePlaceId: (string - Google PlaceId Obtained from AutoComplete Service - required)
+googlePlaceId: (string - Google PlaceId Obtained from AutoComplete Service OR IATA - required) </br>
 sessionId: (string - Unique Session Identifier, same as used for AutoComplete Session - required)
+
+IATA Format (Special case for airports - to be passed in as googlePlaceId parameter. </br>
+`|IATA|*** where *** is the IATA code e.g |IATA|PLZ`
 
 Response Body (EzPid - EzShuttle PlaceId)
 
