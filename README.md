@@ -75,7 +75,7 @@ Request
 
 * Http Verb: GET
 * Headers: Content-Type: application/json
-* Http EndPoint: /QuickBookings
+* Http EndPoint: /QuickQuotes
 * QueryString Parameters:
 
 * pickupDateTime: 2019-07-29T07:00:00  (datetime - required)
