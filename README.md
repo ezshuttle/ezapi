@@ -159,14 +159,16 @@ Response
 }`
 ```
 # 6 QuickBookings (Cancel)
-Http Verb: GET
-Headers: Content-Type: application/json
-Http EndPoint: /QuickBookings
-QueryString Parameters:
+* Http Verb: GET
+* Headers: Content-Type: application/json
+* Http EndPoint: /QuickBookings
+* QueryString Parameters:
 
-reference: (int - EzShuttle Reference - optional)
+* reference: (int - EzShuttle Reference - optional)
 
-Response Http 200-OK
+Response
+
+Http 200-OK
 Reservation Has Been Deleted For Id = 123456
 
 
