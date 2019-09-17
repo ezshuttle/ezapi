@@ -246,6 +246,7 @@ Please examine the errorCode field to obtain the ezshuttle api error as per tabl
  * JhbPtaSuburbToSuburbNotSupported = 84,
  * SuburbOrDestinationNotFound = 85,
  * TrailerRequiresAdditionalPax = 86,
+ * QuoteNotAvailable = 94,
  * GeneralValidationError = 98,
  * MultiTripReservationNotSupported = 300
 
