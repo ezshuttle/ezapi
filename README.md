@@ -177,9 +177,9 @@ Reservation Has Been Deleted For Id = 123456
 
 # 7 QuickConfirmations 
 
-Http Verb: GET
-Http EndPoint: /QuickConfirmations/{reference}
-Response Headers: Content-Type: application/pdf
+* Http Verb: GET
+* Http EndPoint: /QuickConfirmations/{reference}
+* Response Headers: Content-Type: application/pdf
 
 Response
 
