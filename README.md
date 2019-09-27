@@ -8,8 +8,9 @@ Sections
 4. QuickQuotes
 5. QuickBookings (Create)
 6. QuickBookings (Cancel)
-7. UpdatePurchaseOrderRequest
-8. Error Codes
+7. QuickConfirmations (Get)
+8. UpdatePurchaseOrderRequest
+9. Error Codes
 
 # 1 Base API Url
 
@@ -174,8 +175,17 @@ Response
 Http 200-OK
 Reservation Has Been Deleted For Id = 123456
 
+# 7 QuickConfirmations 
 
-# 7 UpdatePurchaseOrderRequest 
+Http Verb: GET
+Http EndPoint: /QuickConfirmations/{reference}
+Response Headers: Content-Type: application/pdf
+
+Response
+
+PDF-FILE 
+
+# 8 UpdatePurchaseOrderRequest 
 
 Http Verb: POST
 Http EndPoint: /UpdatePurchaseOrderRequest
@@ -190,7 +200,7 @@ Response
 
 True
 
-# 8 Error Codes 
+# 9 Error Codes 
 
 In the case of an error an HTTP 400 error code will be returned wth the error detail in the body. For example:
 
