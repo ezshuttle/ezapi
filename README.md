@@ -6,11 +6,12 @@ Sections
 2. Authorization
 3. LocationFinder
 4. QuickQuotes
-5. QuickBookings (Create)
-6. QuickBookings (Cancel)
-7. QuickConfirmations (Get)
-8. UpdatePurchaseOrderRequest
-9. Error Codes
+5. QuickMultiQuotes
+6. QuickBookings (Create)
+7. QuickBookings (Cancel)
+8. QuickConfirmations (Get)
+9. UpdatePurchaseOrderRequest
+10. Error Codes
 
 # 1 Base API Url
 
@@ -102,7 +103,48 @@ Recomended Type Codes
 Types can be pulled dynamically from: https://api.ezshuttle.co.za/ezx/quote/api/VehicleType
 The results include vehicle thumbnails.
 
-# 5 QuickBookings (Create)
+# 5 QuickMultiQuotes
+
+Request
+
+* Http Verb: GET
+* Headers: Content-Type: application/json
+* Http EndPoint: /QuickMultiQuotes/get
+* QueryString Parameters:
+
+* pickupDateTime: 2019-07-29T07:00:00  (datetime - required)
+* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
+* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
+* numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
+* includeBabySeat: false  (bool - BabySeat is requested - required)
+* includeTrailer: false (bool - Trailer is requested - required)
+* returnPickupDateTime: 2019-08-19T08:00:00.000Z (datetime - If NULL reservation is one way only - optional)
+
+Response Body 
+```json
+[
+    {
+        "PrimaryTripQuoteId": "9ff416f0-b24a-42a9-bb0f-9e9fa4d72848",
+        "ReturnTripQuoteId": "00000000-0000-0000-0000-000000000000",
+        "TotalAmountInCents": 34000,
+        "VehicleTypeId": 1
+    },
+    {
+        "PrimaryTripQuoteId": "9fcc3141-f0bf-4453-a050-df7d8d512be9",
+        "ReturnTripQuoteId": "00000000-0000-0000-0000-000000000000",
+        "TotalAmountInCents": 51000,
+        "VehicleTypeId": 2
+    },
+    {
+        "PrimaryTripQuoteId": "d65211b0-cf53-475d-93ca-930d3a519e93",
+        "ReturnTripQuoteId": "00000000-0000-0000-0000-000000000000",
+        "TotalAmountInCents": 49000,
+        "VehicleTypeId": 3
+    }
+]
+```
+
+# 6 QuickBookings (Create)
 
 Http Verb: POST
 Http EndPoint: /QuickBookings/post
@@ -162,7 +204,7 @@ Response
     "ClientReservationId": "PR884526"
 }`
 ```
-# 6 QuickBookings (Cancel)
+# 7 QuickBookings (Cancel)
 * Http Verb: DELETE
 * Headers: Content-Type: application/json
 * Http EndPoint: /QuickBookings
@@ -175,7 +217,7 @@ Response
 Http 200-OK
 Reservation Has Been Deleted For Id = 123456
 
-# 7 QuickConfirmations 
+# 8 QuickConfirmations 
 
 * Http Verb: GET
 * Http EndPoint: /QuickConfirmations/get?reference={reference}
@@ -185,7 +227,7 @@ Response
 
 PDF-FILE 
 
-# 8 UpdatePurchaseOrderRequest 
+# 9 UpdatePurchaseOrderRequest 
 
 Http Verb: POST
 Http EndPoint: /UpdatePurchaseOrderRequest
@@ -200,7 +242,7 @@ Response
 
 True
 
-# 9 Error Codes 
+# 10 Error Codes 
 
 In the case of an error an HTTP 400 error code will be returned wth the error detail in the body. For example:
 
