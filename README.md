@@ -124,22 +124,32 @@ Response Body
 ```json
 [
     {
-        "PrimaryTripQuoteId": "9ff416f0-b24a-42a9-bb0f-9e9fa4d72848",
-        "ReturnTripQuoteId": "00000000-0000-0000-0000-000000000000",
-        "TotalAmountInCents": 34000,
-        "VehicleTypeId": 1
+        "PrimaryTripQuoteId": "d941c276-062c-48df-9d2b-601db2574966",
+        "ReturnTripQuoteId": "c8b58b75-5337-4f64-9c42-f9fa94b7274e",
+        "TotalAmountInCents": 70000,
+        "VehicleTypeId": 1,
+        "VehicleTypeName": "Comfort - Sedan (3 seater)"
     },
     {
-        "PrimaryTripQuoteId": "9fcc3141-f0bf-4453-a050-df7d8d512be9",
-        "ReturnTripQuoteId": "00000000-0000-0000-0000-000000000000",
-        "TotalAmountInCents": 51000,
-        "VehicleTypeId": 2
+        "PrimaryTripQuoteId": "b4dec742-2ffd-499c-8f0b-0a2ab63a32d3",
+        "ReturnTripQuoteId": "291bb893-e084-4fd0-a0ec-b0b915a9bca5",
+        "TotalAmountInCents": 105000,
+        "VehicleTypeId": 2,
+        "VehicleTypeName": "Business - Sedan (3 seater)"
     },
     {
-        "PrimaryTripQuoteId": "d65211b0-cf53-475d-93ca-930d3a519e93",
-        "ReturnTripQuoteId": "00000000-0000-0000-0000-000000000000",
-        "TotalAmountInCents": 49000,
-        "VehicleTypeId": 3
+        "PrimaryTripQuoteId": "ed0cee4e-dd9c-4604-a11c-88845310c227",
+        "ReturnTripQuoteId": "d37b3d87-1e33-4063-85df-1a2354e7e2d5",
+        "TotalAmountInCents": 106000,
+        "VehicleTypeId": 3,
+        "VehicleTypeName": "Comfort - Van (9 seater)"
+    },
+    {
+        "PrimaryTripQuoteId": "1110f22d-4a7f-4e30-b2b9-5975aed48c0d",
+        "ReturnTripQuoteId": "90996938-303c-4398-ad53-154ac2b308ce",
+        "TotalAmountInCents": 106000,
+        "VehicleTypeId": 4,
+        "VehicleTypeName": "Comfort - Minibus (13 seater)"
     }
 ]
 ```
