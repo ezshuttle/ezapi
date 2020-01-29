@@ -217,10 +217,10 @@ Response
 # 7 QuickBookings (Cancel)
 * Http Verb: DELETE
 * Headers: Content-Type: application/json
-* Http EndPoint: /QuickBookings
+* Http EndPoint: /QuickBookings/delete
 * QueryString Parameters:
 
-* reference: (int - EzShuttle Reference - optional)
+* reference: (int - EzShuttle Reference)
 
 Response
 
