@@ -80,7 +80,7 @@ Request
 * Http EndPoint: /QuickQuotes/get
 * QueryString Parameters:
 
-* pickupDateTime: 2019-07-29T07:00:00  (datetime - required)
+* pickupDateTime: 2019-07-29T07:00:00  (SAST DateTime - required. NB: Not UTC !)
 * pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
 * destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
 * vehicleType: 1  (int - TypeCode - required)
@@ -112,7 +112,7 @@ Request
 * Http EndPoint: /QuickMultiQuotes/get
 * QueryString Parameters:
 
-* pickupDateTime: 2019-07-29T07:00:00  (datetime - required)
+* pickupDateTime: 2019-07-29T07:00:00  (UTC DateTime - required. TimeZone/Offset will be stripped from request)
 * pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
 * destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
 * numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
@@ -168,7 +168,7 @@ Json Body Content:
   "DestinationDisplayAdadress": "entrance 4",           // (string - Additional address description to be appended to Google/LocatioFinder address - optional) 
   "PickupFlightNumber": "FLTEST",                       // (string - Compulsory if pickup is an airport - optional, on condition) 
   "ReturnPickupFlightNumber": null,                     // (string - Compulsory if pickup is an airport on return trip - optional, on condition) 
-  "PickupDateTime": "2019-07-28T07:00:00",              // (datetime UTC - required) 
+  "PickupDateTime": "2019-07-28T07:00:00",              // (UTC DateTime - required.Timezone/Offset will be stripped from                                                             // request) e.g for 9:00AM localtime pickup : 2019-07-28T07:00:00
   "ReturnPickupDateTime": null,                         // (datetime UTC - If NULL reservation is one way only - optional) 
   "NumberOfPassengers": 1,                              // (int - Pax, min=1;max=13 - required) 
   "VehicleType": 1,                                     // (int - TypeCode - required) 
