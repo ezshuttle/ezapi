@@ -80,7 +80,7 @@ Request
 * Http EndPoint: /QuickQuotes/get
 * QueryString Parameters:
 
-* pickupDateTime: 2019-07-29T07:00:00  (SAST DateTime - required. NB: Not UTC !)
+* pickupDateTime: 2019-07-29T07:00:00 or 2019-07-29T05:00:00Z (SAST DateTime / UTC DateTime - required.)
 * pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
 * destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
 * vehicleType: 1  (int - TypeCode - required)
@@ -112,7 +112,7 @@ Request
 * Http EndPoint: /QuickMultiQuotes/get
 * QueryString Parameters:
 
-* pickupDateTime: 2019-07-29T07:00:00  (UTC DateTime - required. TimeZone/Offset will be stripped from request)
+* pickupDateTime: 2019-07-29T07:00:00  (UTC DateTime - required. Any TimeZone/Offset information passed will be stripped from request)
 * pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
 * destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
 * numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
@@ -289,7 +289,7 @@ Please examine the errorCode field to obtain the ezshuttle api error as per tabl
  * ReservationNotFound= 65,
  * ReservationIdNullOrZero = 66,
  * NotificationTypeNotSpecified = 67,
- * QuoteConvertedAlready = 68,
+ * QuoteConvertedAlreadyOrNotFound = 68,
  * TripTimeInvalid = 69,
  * PickupTimeIsNull = 70,
  * SuburbsOfficesInvalid = 71,
