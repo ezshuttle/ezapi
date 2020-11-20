@@ -90,6 +90,8 @@ Request
 * includeTrailer: false (bool - Trailer is requested - required)
 * returnPickupDateTime: 2019-08-19T08:00:00.000Z (datetime - If NULL reservation is one way only - optional)
 
+* Response Headers: Content-Type: text/plain
+
 Response Body 
 
 500000
@@ -257,7 +259,7 @@ True
 
 * Http Verb: GET
 * Http EndPoint: /QuickClientReferenceLookup/get/{clientReservationId} 
-* Response Headers: Content-Type: application/pdf
+* Response Headers: Content-Type: text/plain
 
 Response Body 
 
