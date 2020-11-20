@@ -11,7 +11,8 @@ Sections
 7. QuickBookings (Cancel)
 8. QuickConfirmations (Get)
 9. UpdatePurchaseOrderRequest
-10. Error Codes
+10. QuickClientReferenceLookup
+11. Error Codes
 
 # 1 Base API Url
 
@@ -178,11 +179,11 @@ Json Body Content:
   "PaymentMethod": 4,                                   // (int - TypeCode 4 = Account - required) 
   "Name": "Richard",                                    // (string - Passenger FirstName - required) 
   "Surname": "McIntyre",                                // (string - Passenger Surname - required) 
-  "Cell": "+27722939392",                               // (string - Passenger Mobile - required) 
-  "Email": "richard@mailinator.com",                    // (string - Passenger Email - required)
+  "Cell": "+27722939392",                               // (string - Passenger Mobile, single MSISDN in international format - required) 
+  "Email": "richard@mailinator.com",                    // (string - Passenger Email, single valid email address - required)
   "PurchaseOrder": "POTEST",                            // (string - Client Defined PurchaseOrder - optional)
   "CostCentre": "COTEST",                               // (string - Special Instructions - optional) 
-  "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional) 
+  "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional but highly reccomended. Should be unique) 
 }` 
 ```
 Response
@@ -252,7 +253,26 @@ Response
 
 True
 
-# 10 Error Codes 
+# 10 QuickClientReferenceLookup
+
+* Http Verb: GET
+* Http EndPoint: /QuickClientReferenceLookup/get/{clientReservationId} 
+* Response Headers: Content-Type: application/pdf
+
+Response Body 
+
+xxxxxx
+
+Where xxxxxx is the booking ReferenceId (int)
+ClientReservationId should match the client defined reference passed into QuickBookings-Create.
+
+If not found an HTTP-404 response will be returned.
+
+It is highly recommended that the client application call this endpoint should a timeout occur during the booking process in order to confirm if a reservation was  successfully created. 
+
+It is the responsibility of the client application to ensure that the ClientReservationId provided during the booking process is unique, as this endpoint will simply return the first booking it finds with the provided ClientReservationId.
+
+# 11 Error Codes 
 
 In the case of an error an HTTP 400 error code will be returned wth the error detail in the body. For example:
 
