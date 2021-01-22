@@ -9,10 +9,11 @@ Sections
 5. QuickMultiQuotes
 6. QuickBookings (Create)
 7. QuickBookings (Cancel)
-8. QuickConfirmations (Get)
-9. UpdatePurchaseOrderRequest
-10. QuickClientReferenceLookup
-11. Error Codes
+8. QuickBookings (Get)
+9. QuickConfirmations (Get)
+10. UpdatePurchaseOrderRequest
+11. QuickClientReferenceLookup
+12. Error Codes
 
 # 1 Base API Url
 
@@ -70,7 +71,6 @@ IATA Format (Special case for airports - to be passed in as googlePlaceId parame
 Response Body (EzPid - EzShuttle PlaceId)
 
 EZKnYwMDEqMnwtMjYuMTY1NTA4Nzk5OTk5OTl8MjguMTQwNzkxMnwtMXw0OXw3OSBCb2VpbmcgUmQgRSwgQmVkZm9yZHZpZXcsIEdlcm1pc3RvbiwgMjAwNywgU291dGggQWZyaWNhfDEwMDR8MXwxMC4yNzExfA==
-
 
 # 4 QuickQuotes
 
@@ -230,7 +230,45 @@ Response
 Http 200-OK
 Reservation Has Been Deleted For Id = 123456
 
-# 8 QuickConfirmations 
+# 8 QuickBookings (Get)
+* Http Verb: GET
+* Headers: Content-Type: application/json
+* Http EndPoint: /QuickBookings/get
+* QueryString Parameters:
+
+* reference: (int - EzShuttle Reference)
+
+Response
+
+```json
+`{
+    "ReferenceId": 884526,                                  // (int - EzShuttle ReferenceId)
+    "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",
+    "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",
+    "PickupDisplayAddress": "",
+    "DestinationDisplayAddress": "entrance 4",
+    "PickupFlightNumber": "FLTEST",
+    "ReturnPickupFlightNumber": "",
+    "PickupDateTime": "2019-07-28T07:00:00",
+    "ReturnPickupDateTime": null,
+    "NumberOfPassengers": 1,
+    "VehicleType": 1,
+    "IncludeBabySeat": false,
+    "IncludeTrailer": false,
+    "SpecialInstructions": null,
+    "PaymentMethod": 4,
+    "Name": "Richard",
+    "Surname": "McIntyre",
+    "Cell": "+27722939392",
+    "Email": "richard@mailinator.com",
+    "PurchaseOrder": "POTEST",
+    "CostCentre": "COTEST",
+    "CostInCents": 50000,
+    "QuoteId": null,
+    "ClientReservationId": "PR884526"
+}`
+```
+# 9 QuickConfirmations 
 
 * Http Verb: GET
 * Http EndPoint: /QuickConfirmations/get?reference={reference}
@@ -240,7 +278,7 @@ Response
 
 PDF-FILE 
 
-# 9 UpdatePurchaseOrderRequest 
+# 10 UpdatePurchaseOrderRequest 
 
 Http Verb: POST
 Http EndPoint: /UpdatePurchaseOrderRequest
@@ -255,7 +293,7 @@ Response
 
 True
 
-# 10 QuickClientReferenceLookup
+# 11 QuickClientReferenceLookup
 
 * Http Verb: GET
 * Http EndPoint: /QuickClientReferenceLookup/get/{clientReservationId} 
@@ -274,7 +312,7 @@ It is highly recommended that the client application call this endpoint should a
 
 It is the responsibility of the client application to ensure that the ClientReservationId provided during the booking process is unique, as this endpoint will simply return the first booking it finds with the provided ClientReservationId.
 
-# 11 Error Codes 
+# 12 Error Codes 
 
 In the case of an error an HTTP 400 error code will be returned wth the error detail in the body. For example:
 
