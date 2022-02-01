@@ -131,28 +131,32 @@ Response Body
         "ReturnTripQuoteId": "c8b58b75-5337-4f64-9c42-f9fa94b7274e",
         "TotalAmountInCents": 70000,
         "VehicleTypeId": 1,
-        "VehicleTypeName": "Comfort - Sedan (3 seater)"
+        "VehicleTypeName": "Comfort - Sedan (3 seater)",
+        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
     },
     {
         "PrimaryTripQuoteId": "b4dec742-2ffd-499c-8f0b-0a2ab63a32d3",
         "ReturnTripQuoteId": "291bb893-e084-4fd0-a0ec-b0b915a9bca5",
         "TotalAmountInCents": 105000,
         "VehicleTypeId": 2,
-        "VehicleTypeName": "Business - Sedan (3 seater)"
+        "VehicleTypeName": "Business - Sedan (3 seater)",
+         "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
     },
     {
         "PrimaryTripQuoteId": "ed0cee4e-dd9c-4604-a11c-88845310c227",
         "ReturnTripQuoteId": "d37b3d87-1e33-4063-85df-1a2354e7e2d5",
         "TotalAmountInCents": 106000,
         "VehicleTypeId": 3,
-        "VehicleTypeName": "Comfort - Van (9 seater)"
+        "VehicleTypeName": "Comfort - Van (9 seater)",
+         "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
     },
     {
         "PrimaryTripQuoteId": "1110f22d-4a7f-4e30-b2b9-5975aed48c0d",
         "ReturnTripQuoteId": "90996938-303c-4398-ad53-154ac2b308ce",
         "TotalAmountInCents": 106000,
         "VehicleTypeId": 4,
-        "VehicleTypeName": "Comfort - Minibus (13 seater)"
+        "VehicleTypeName": "Comfort - Minibus (13 seater)",
+         "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
     }
 ]
 ```
