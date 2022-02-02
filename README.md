@@ -132,7 +132,9 @@ Response Body
         "TotalAmountInCents": 70000,
         "VehicleTypeId": 1,
         "VehicleTypeName": "Comfort - Sedan (3 seater)",
-        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
+        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/",
+        "CancelAllowedDeadlineMinutes": 30,
+        "CancelBillableDeadlineMinutes": 120
     },
     {
         "PrimaryTripQuoteId": "b4dec742-2ffd-499c-8f0b-0a2ab63a32d3",
@@ -140,7 +142,9 @@ Response Body
         "TotalAmountInCents": 105000,
         "VehicleTypeId": 2,
         "VehicleTypeName": "Business - Sedan (3 seater)",
-         "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
+        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/",
+        "CancelAllowedDeadlineMinutes": 30,
+        "CancelBillableDeadlineMinutes": 120
     },
     {
         "PrimaryTripQuoteId": "ed0cee4e-dd9c-4604-a11c-88845310c227",
@@ -148,7 +152,9 @@ Response Body
         "TotalAmountInCents": 106000,
         "VehicleTypeId": 3,
         "VehicleTypeName": "Comfort - Van (9 seater)",
-         "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
+        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/",
+        "CancelAllowedDeadlineMinutes": 30,
+        "CancelBillableDeadlineMinutes": 120
     },
     {
         "PrimaryTripQuoteId": "1110f22d-4a7f-4e30-b2b9-5975aed48c0d",
@@ -156,7 +162,9 @@ Response Body
         "TotalAmountInCents": 106000,
         "VehicleTypeId": 4,
         "VehicleTypeName": "Comfort - Minibus (13 seater)",
-         "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/"
+        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/",
+        "CancelAllowedDeadlineMinutes": 30,
+        "CancelBillableDeadlineMinutes": 120
     }
 ]
 ```
