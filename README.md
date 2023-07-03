@@ -432,19 +432,19 @@ Webhook Message Json
 
 Supported update-type codes
 
-Update Type Code (* = to be supported in future)
+Update Type Code (UpdateTypeId)
 
-1=Create *
-2=PickupTimeChanged * 
-3=PickupDropOffLocationChanged *
-4=DriverNameChanged 
-5=DriverEtaChanged *
-6=DriverLocationChanged
-9=Cancelled *
-10=Driver5MinuteArrivalAlarm
-11=TripEndEtaChanged *
+1=Create    
+2=PickupTimeChanged    
+3=PickupDropOffLocationChanged    
+4=DriverNameChanged    
+5=DriverEtaChanged    
+6=DriverLocationChanged   
+9=Cancelled    
+10=Driver5MinuteArrivalAlarm   
+11=TripEndEtaChanged    
 
-Update Type Code Description
+Update Type Code Description (Types currently supported)
 
 4. DriverNameChanged
    A driver has been assigned to this trip. This notification will occur no earlier than 3 hours before the trip.
