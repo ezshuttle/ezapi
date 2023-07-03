@@ -14,6 +14,7 @@ Sections
 10. UpdatePurchaseOrderRequest
 11. QuickClientReferenceLookup
 12. Error Codes
+13. Webhook
 
 # 1 Base API Url
 
@@ -185,7 +186,7 @@ Http EndPoint: /QuickBookings/post
 Headers: Content-Type: application/json
 Json Body Content:
 ```json
-`{
+{
   "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",       // (string - Google PID OR Ezshuttle EzPID - required) 
   "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",  // (string - Google PID OR Ezshuttle EzPID - required) 
   "PickupDisplayAddress": "",                           // (string - Additional address description to be appended to Google/LocatioFinder address - optional) 
@@ -207,11 +208,11 @@ Json Body Content:
   "PurchaseOrder": "POTEST",                            // (string - Client Defined PurchaseOrder - optional)
   "CostCentre": "COTEST",                               // (string - Special Instructions - optional) 
   "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional but highly reccomended. Should be unique) 
-}` 
+}
 ```
 Response
 ```json
-`{
+{
     "ReferenceId": 884526,                                  // (int - EzShuttle ReferenceId)
     "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",
     "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",
@@ -236,7 +237,7 @@ Response
     "CostInCents": 50000,
     "QuoteId": null,
     "ClientReservationId": "PR884526"
-}`
+}
 ```
 # 7 QuickBookings (Cancel)
 * Http Verb: DELETE
@@ -262,7 +263,7 @@ Reservation Has Been Deleted For Id = 123456
 Response
 
 ```json
-`{
+{
     "ReferenceId": 884526,                                  // (int - EzShuttle ReferenceId)
     "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",
     "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",
@@ -287,7 +288,7 @@ Response
     "CostInCents": 50000,
     "QuoteId": null,
     "ClientReservationId": "PR884526"
-}`
+}
 ```
 # 9 QuickConfirmations 
 
@@ -405,4 +406,51 @@ Please examine the errorCode field to obtain the ezshuttle api error as per tabl
 
 * ErrorSendingSMSOrEmailNotification = 200,
 * ErrorProcessingPayment = 300
+
+# 13 Webhook
+
+It is possible register a webhook so that EzShuttle will push updates to trips booked under your account in real-time. Please contact your account manager and provide them with a url that your enviroment exposes to be used for this purpose. e.g https://www.mytravelcorp.com/api/ez_webhook
+
+Webhook Message Json
+
+```json
+{
+    "PNR": "BT7Z5YR0",
+    "UpdateTypeId": 1, 
+    "PickupDT": "2019-11-07T17:00:00Z",
+    "PickupDisplay": "Cape Town International Airport",
+    "DropOffDisplay": "aha Harbour Bridge Hotel & Suites",
+    "PriceInCents": 330000,
+    "DriverName": "Tom Smith",
+    "DriverEta": "2019-11-07T16:48:00Z",
+    "DriverPositionLat": -33.810322,
+    "DriverPositionLon": 18.497749,
+    "IsCancelled": false,
+    "MessageCreateDT": "2019-11-07T16:48:00Z"
+}
+```
+
+Supported update-type codes
+
+Update Type Code (* = to be supported in future)
+
+1=Create *
+2=PickupTimeChanged * 
+3=PickupDropOffLocationChanged *
+4=DriverNameChanged 
+5=DriverEtaChanged *
+6=DriverLocationChanged
+9=Cancelled *
+10=Driver5MinuteArrivalAlarm
+11=TripEndEtaChanged *
+
+Update Type Code Description
+
+4. DriverNameChanged
+   A driver has been assigned to this trip. This notification will occur no earlier than 3 hours before the trip.
+6. DriverLocationChanged
+    A trip which is currently in progress (Driver is enroute to pickup point OR enroute to dropoff point) 
+8. Driver5MinuteArrivalAlarm
+   Driver is less tha 5 minutes from the pickup point
+
 
