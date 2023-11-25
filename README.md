@@ -29,14 +29,14 @@ Should you not have an account please apply for one by clicking "Want To Open An
 
 # 3 LocationFinder
 
-Our endpoints accept either Google PlaceId's (Google PID - Google Places AutoComplete) or EzShuttle PlaceId's (EzPID - EzShuttle API Placefinder). 
-We recemend the use of EzPID's with our place finder endpoint for the following reasons:
+Our endpoints accept either Google PlaceId's (Google PID - Google Places AutoComplete) or EzShuttle PlaceId's (EzPID - EzShuttle API Place Finder) 
+We recommend the use of EzPID's with our place finder endpoint for the following reasons:
 
-a. Automaticlly filtered to only provide locations which we service.
-b. Built in Handling of IATA codes for airport pickup's / dropoffs.
+a. Automatically filtered to only provide locations which we service.
+b. Built in Handling of IATA codes for airport pickup's / drop offs.
 c. Lower latency for Quote Generation / Reservation Creation.
 
-It is reccomended that a library such as https://github.com/TarekRaafat/autoComplete.js is used for the LocationFinder.
+It is recommended that a library such as https://github.com/TarekRaafat/autoComplete.js is used for the Location Finder.
 Please see basic working demo (JQUERY) under Samples/LocationFinder
 
 AutoComplete Service
@@ -83,8 +83,8 @@ Request
 * QueryString Parameters:
 
 * pickupDateTime: 2019-07-29T07:00:00 or 2019-07-29T05:00:00Z (SAST DateTime / UTC DateTime - required.)
-* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
-* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
+* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR EzShuttle EzPID - required)
+* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR EzShuttle EzPID - required)
 * vehicleType: 1  (int - TypeCode - required)
 * numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
 * includeBabySeat: false  (bool - BabySeat is requested - required)
@@ -97,9 +97,9 @@ Response Body
 
 500000
 
-Response is the quoted amount in ZAR cents. Above quote is therfore R 500.00
+Response is the quoted amount in ZAR cents. Above quote is therefore R 500.00
 
-Recomended Type Codes 
+Recommended Type Codes 
 1 (3 pax) - sedan 
 3 (9 pax) - minibus 9 pax
 4 (13 pax) - minibus 13 pax
@@ -117,8 +117,8 @@ Request
 * QueryString Parameters:
 
 * pickupDateTime: 2019-07-29T07:00:00  (UTC DateTime - required. Any TimeZone/Offset information passed will be stripped from request)
-* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
-* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
+* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR EzShuttle EzPID - required)
+* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR EzShuttle EzPID - required)
 * numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
 * includeBabySeat: false  (bool - BabySeat is requested - required)
 * includeTrailer: false (bool - Trailer is requested - required)
@@ -191,8 +191,8 @@ Json Body Content:
   "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",  // (string - Google PID OR Ezshuttle EzPID - required) 
   "PickupDisplayAddress": "",                           // (string - Additional address description to be appended to Google/LocatioFinder address - optional) 
   "DestinationDisplayAdadress": "entrance 4",           // (string - Additional address description to be appended to Google/LocatioFinder address - optional) 
-  "PickupFlightNumber": "FLTEST",                       // (string - Compulsory if pickup is an airport - optional, on condition) 
-  "ReturnPickupFlightNumber": null,                     // (string - Compulsory if pickup is an airport on return trip - optional, on condition) 
+  "PickupFlightNumber": "FLTEST",                       // (string - Compulsory if pickup/dropoff is an airport - optional, on condition) 
+  "ReturnPickupFlightNumber": null,                     // (string - Compulsory if pickup/dropoff is an airport on return trip - optional, on condition) 
   "PickupDateTime": "2019-07-28T07:00:00",              // (UTC DateTime - required.Timezone/Offset will be stripped from                                                             // request) e.g for 9:00AM localtime pickup : 2019-07-28T07:00:00
   "ReturnPickupDateTime": null,                         // (datetime UTC - If NULL reservation is one way only - optional) 
   "NumberOfPassengers": 1,                              // (int - Pax, min=1;max=13 - required) 
@@ -200,14 +200,14 @@ Json Body Content:
   "IncludeBabySeat": false,                             // (bool - BabySeat is requested - required) 
   "IncludeTrailer": false,                              // (bool - Trailer is requested - required) 
   "SpecialInstructions": null,                          // (string - Special Instructions - optional) 
-  "PaymentMethod": 4,                                   // (int - TypeCode 4 = Account - required) 
+  "PaymentMethod": "4",                                 // (string - TypeCode 4 = Account - required) 
   "Name": "Richard",                                    // (string - Passenger FirstName - required) 
   "Surname": "McIntyre",                                // (string - Passenger Surname - required) 
   "Cell": "+27722939392",                               // (string - Passenger Mobile, single MSISDN in international format - required) 
   "Email": "richard@mailinator.com",                    // (string - Passenger Email, single valid email address - required)
   "PurchaseOrder": "POTEST",                            // (string - Client Defined PurchaseOrder - optional)
   "CostCentre": "COTEST",                               // (string - Special Instructions - optional) 
-  "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional but highly reccomended. Should be unique) 
+  "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional but highly recommended. Should be unique) 
 }
 ```
 Response
@@ -344,7 +344,7 @@ In the case of an error an HTTP 400 error code will be returned wth the error de
     "errorCode": 83
 }`
 
-Please examine the errorCode field to obtain the ezshuttle api error as per table below:
+Please examine the errorCode field to obtain the ezShuttle api error as per table below:
 
 
 # Error: Validation
@@ -409,7 +409,7 @@ Please examine the errorCode field to obtain the ezshuttle api error as per tabl
 
 # 13 Webhook
 
-It is possible register a webhook so that EzShuttle will push updates to trips booked under your account in real-time. Please contact your account manager and provide them with a url that your enviroment exposes to be used for this purpose. e.g https://www.mytravelcorp.com/api/ez_webhook
+It is possible register a webhook so that EzShuttle will push updates to trips booked under your account in real-time. Please contact your account manager and provide them with a url that your environment exposes to be used for this purpose. e.g https://www.mytravelcorp.com/api/ez_webhook
 
 Webhook Message Json
 
@@ -446,11 +446,12 @@ Update Type Code (UpdateTypeId)
 
 Update Type Code Description (Types currently supported)
 
-4. DriverNameChanged
+4. DriverNameChanged :
    A driver has been assigned to this trip. This notification will occur no earlier than 3 hours before the trip.
-6. DriverLocationChanged
-    A trip which is currently in progress (Driver is enroute to pickup point OR enroute to dropoff point) 
-8. Driver5MinuteArrivalAlarm
+
+6. DriverLocationChanged :
+
+    A trip which is currently in progress (Driver is enroute to pickup point OR enroute to drop off point) 
+
+8. Driver5MinuteArrivalAlarm :
    Driver is less tha 5 minutes from the pickup point
-
-
