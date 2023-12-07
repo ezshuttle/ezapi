@@ -399,6 +399,7 @@ Please examine the errorCode field to obtain the ezshuttle api error as per tabl
 # Error: General
 
 * GeneralError = 99,
+* AdhocUnauthorisedTrip = 91 
 * Unauthorized = 100,
 * InternalServerError = 101,
 * ResourceNotFound = 102,
