@@ -236,7 +236,9 @@ Response
     "CostCentre": "COTEST",
     "CostInCents": 50000,
     "QuoteId": null,
-    "ClientReservationId": "PR884526"
+    "ClientReservationId": "PR884526",
+    "TripPnr": "9LI1R0HD",
+    "ReturnTripPnr": ""
 }
 ```
 # 7 QuickBookings (Cancel)
