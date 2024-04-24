@@ -305,7 +305,7 @@ PDF-FILE
 # 10 UpdatePurchaseOrderRequest 
 
 Http Verb: POST
-Http EndPoint: /UpdatePurchaseOrderRequest
+Http EndPoint: /UpdatePurchaseOrderRequest/post
 Headers: Content-Type: application/json
 Json Body Content:
 `{
