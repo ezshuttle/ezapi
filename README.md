@@ -11,10 +11,11 @@ Sections
 7. QuickBookings (Cancel)
 8. QuickBookings (Get)
 9. QuickConfirmations (Get)
-10. UpdatePurchaseOrderRequest
-11. QuickClientReferenceLookup
-12. Error Codes
-13. Webhook
+10. UpdatePurchaseOrderRequest 
+11. QuickClientReferenceLookup (Get)
+12. QuickDriverDetails (Get)
+13. Error Codes
+14. Webhook
 
 # 1 Base API Url
 
@@ -336,7 +337,35 @@ It is highly recommended that the client application call this endpoint should a
 
 It is the responsibility of the client application to ensure that the ClientReservationId provided during the booking process is unique, as this endpoint will simply return the first booking it finds with the provided ClientReservationId.
 
-# 12 Error Codes 
+# 12 QuickDriverDetails 
+
+* Http Verb: GET
+* Headers: Content-Type: application/json
+* Http EndPoint: /QuickDriverDetails
+* QueryString Parameters:
+
+* pnr: (string - EzShuttle PNR)
+* passengerMobile (string - passenger mobile number in international format)
+
+Response Body 
+
+```json
+
+{
+	"firstName": "Kyle",
+	"lastName": "Smith",
+	"mobile": "+27661550900",
+	"profilePhotoUrl": "https://firebasestorage.googleapis.com/photo.jpg",
+	"serviceYears": 3,
+	"starRating": 5,
+	"vehicleRegistration": "CF433333",
+	"totalTripCount": 1411
+}
+
+```
+Please note that this endpoint will only provide details while a trip is actually active (Driver is OnRoute to pickup , or OnTrip to destination)
+
+# 13 Error Codes 
 
 In the case of an error an HTTP 400 error code will be returned wth the error detail in the body. For example:
 
@@ -410,7 +439,7 @@ Please examine the errorCode field to obtain the ezshuttle api error as per tabl
 * ErrorSendingSMSOrEmailNotification = 200,
 * ErrorProcessingPayment = 300
 
-# 13 Webhook
+# 14 Webhook
 
 It is possible register a webhook so that EzShuttle will push updates to trips booked under your account in real-time. Please contact your account manager and provide them with a url that your enviroment exposes to be used for this purpose. e.g https://www.mytravelcorp.com/api/ez_webhook
 
