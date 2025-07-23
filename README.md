@@ -1,62 +1,74 @@
-### EzShuttle QuickBookings API v2.0
+# EzShuttle QuickBookings API v2.0
 
-### 📘 Table of Contents
+## 📋 Table of Contents
 
-- [1 Base API Url](#1-base-api-url)
-- [2 Authorization](#2-authorization)
-- [3 LocationFinder](#3-locationfinder)
-- [4 QuickQuotes](#4-quickquotes)
-- [5 QuickMultiQuotes](#5-quickmultiquotes)
-- [6 QuickBookings (Create)](#6-quickbookings-create)
-- [7 QuickBookings (Cancel)](#7-quickbookings-cancel)
-- [8 QuickBookings (Get)](#8-quickbookings-get)
-- [9 QuickConfirmations](#9-quickconfirmations)
-- [10 UpdatePurchaseOrderRequest](#10-updatepurchaseorderrequest)
-- [11 QuickClientReferenceLookup](#11-quickclientreferencelookup)
-- [12 Error Codes](#12-error-codes)
-- [Error: Validation](#error-validation)
-- [Error: General](#error-general)
-- [Error: Process](#error-process)
-- [13 Webhook](#13-webhook)
-      - [Supported update-type codes](#supported-update-type-codes)
+- [1. Base API URL](#1-base-api-url)
+- [2. Authorization](#2-authorization)
+- [3. LocationFinder](#3-locationfinder)
+- [4. QuickQuotes](#4-quickquotes)
+- [5. QuickMultiQuotes](#5-quickmultiquotes)
+- [6. QuickBookings (Create)](#6-quickbookings-create)
+- [7. QuickBookings (Cancel)](#7-quickbookings-cancel)
+- [8. QuickBookings (Get)](#8-quickbookings-get)
+- [9. QuickConfirmations](#9-quickconfirmations)
+- [10. UpdatePurchaseOrderRequest](#10-updatepurchaseorderrequest)
+- [11. QuickClientReferenceLookup](#11-quickclientreferencelookup)
+- [12. Error Codes](#12-error-codes)
+- [13. Webhook](#13-webhook)
 
+---
 
-# 1 Base API Url
+## 1. Base API URL
 
-All endpoints described in this document with the exception of LocationFinder have the following base API url:
+All endpoints described in this document (except LocationFinder) use the following base API URL:
+
+```
 https://api.ezshuttle.co.za/ezx/quickbooking/api/
+```
 
-# 2 Authorization
+---
 
-API authorization is implemented with HTTP Basic Authentication in order to retain compatibility with certain legacy partner applications.
-The username/password is the same as you would use to access the Client Portal: https://clientportal.ezshuttle.co.za
-Should you not have an account please apply for one by clicking "Want To Open An Account" on the above page.
+## 2. Authorization
 
-# 3 LocationFinder
+API authorization uses **HTTP Basic Authentication** for compatibility with legacy partner applications.
 
-Our endpoints accept either Google PlaceId's (Google PID - Google Places AutoComplete) or EzShuttle PlaceId's (EzPID - EzShuttle API Placefinder). <br/>
-_We recommend the use of EzPID's with our place finder endpoint for the following reasons:_
+- **Username/Password**: Same credentials used for the [Client Portal](https://clientportal.ezshuttle.co.za)
+- **New Account**: Click "Want To Open An Account" on the Client Portal page
 
-a. Automatically filtered to only provide locations which we service.<br/>
-b. Built in Handling of IATA codes for airport pickup's / drop offs.<br/>
-c. Lower latency for Quote Generation / Reservation Creation.<br/>
+---
 
-It is recommended that a library such as [TarekRaafat/autoComplete](https://github.com/TarekRaafat/autoComplete.js) is used for the LocationFinder.<br/>
-Please see basic working demo **(jQuery)** under Samples/LocationFinder
+## 3. LocationFinder
 
-AutoComplete Service
+### Overview
 
-* Http Verb: GET
-* Headers: Content-Type: application/json
-* Http EndPoint: /AutoComplete  (https://api.ezshuttle.co.za/ezx/locationfinder/api/)
-QueryString Parameters:
+Our endpoints accept either:
+- **Google PlaceId's** (Google PID - Google Places AutoComplete)
+- **EzShuttle PlaceId's** (EzPID - EzShuttle API Placefinder)
 
-querytext: (string - Query Text - required)
-sessionid: (string - Unique Session Identifier for Every Lookup - required)
-partnerKey: (string - Will be supplied on account creation -required)
+> **💡 Recommendation**: Use EzPID's with our place finder endpoint for:
+> - Automatically filtered locations we service
+> - Built-in IATA code handling for airports
+> - Lower latency for quotes and reservations
 
-Response Json Body
+### Implementation
 
+Use a library like [TarekRaafat/autoComplete](https://github.com/TarekRaafat/autoComplete.js) for the LocationFinder.  
+See basic working demo (jQuery) under `Samples/LocationFinder`
+
+### AutoComplete Service
+
+**Endpoint**: `GET /AutoComplete`  
+**Base URL**: `https://api.ezshuttle.co.za/ezx/locationfinder/api/`  
+**Headers**: `Content-Type: application/json`
+
+#### QueryString Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `querytext` | string | ✓ | Query text |
+| `sessionid` | string | ✓ | Unique session identifier |
+| `partnerKey` | string | ✓ | Supplied on account creation |
+
+#### Response
 ```json
 {
     "displayName": "Sandton City, Rivonia Road, Sandhurst, Sandton, South Africa",
@@ -64,78 +76,87 @@ Response Json Body
 }
 ```
 
-Once the Google PlaceId is obtained it needs to be converted to an EzShuttle PlaceId:
+### GooglePlaceIdLookup Service
 
-GooglePlaceIdLookup Service
+**Endpoint**: `GET /GooglePlaceIdLookup`  
+**Base URL**: `https://api.ezshuttle.co.za/ezx/locationfinder/api/`  
+**Headers**: `Content-Type: application/json`
 
-* Http Verb: GET
-* Headers: Content-Type: application/json
-* Http EndPoint: /GooglePlaceIdLookup  (https://api.ezshuttle.co.za/ezx/locationfinder/api/)
-* QueryString Parameters:
+#### QueryString Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `googlePlaceId` | string | ✓ | Google PlaceId from AutoComplete OR IATA code |
+| `sessionId` | string | ✓ | Same session ID used for AutoComplete |
 
-googlePlaceId: (string - Google PlaceId Obtained from AutoComplete Service OR IATA - required) </br>
-sessionId: (string - Unique Session Identifier, same as used for AutoComplete Session - required)
+#### IATA Format (Special Case for Airports)
+```
+|IATA|<code>
+```
+Example: `|IATA|PLZ`
 
-IATA Format (Special case for airports - to be passed in as googlePlaceId parameter.) </br>
-`|IATA| where it is the IATA code e.g |IATA|PLZ`
-
-Response Body (EzPid - EzShuttle PlaceId)
-
+#### Response
+Returns EzShuttle PlaceId (EzPid):
+```
 EZKnYwMDEqMnwtMjYuMTY1NTA4Nzk5OTk5OTl8MjguMTQwNzkxMnwtMXw0OXw3OSBCb2VpbmcgUmQgRSwgQmVkZm9yZHZpZXcsIEdlcm1pc3RvbiwgMjAwNywgU291dGggQWZyaWNhfDEwMDR8MXwxMC4yNzExfA==
+```
 
-# 4 QuickQuotes
+---
 
-Request
+## 4. QuickQuotes
 
-* Http Verb: GET
-* Headers: Content-Type: application/json
-* Http EndPoint: /QuickQuotes/get
-* QueryString Parameters:
+Get a quick price quote for a single vehicle type.
 
-* pickupDateTime: 2019-07-29T07:00:00 or 2019-07-29T05:00:00Z (SAST DateTime / UTC DateTime - required.)
-* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR Ezshuttle EzPID - required)
-* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR Ezshuttle EzPID - required)
-* vehicleType: 1  (int - TypeCode - required)
-* numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
-* includeBabySeat: false  (bool - BabySeat is requested - required)
-* includeTrailer: false (bool - Trailer is requested - required)
-* returnPickupDateTime: 2019-08-19T08:00:00.000Z (datetime - If NULL reservation is one way only - optional)
+**Endpoint**: `GET /QuickQuotes/get`  
+**Headers**: `Content-Type: application/json`
 
-* Response Headers: Content-Type: text/plain
+### QueryString Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `pickupDateTime` | DateTime | ✓ | SAST DateTime or UTC DateTime<br/>Format: `2025-07-29T07:00:00` or `2025-07-29T05:00:00Z` |
+| `pickupPlaceId` | string | ✓ | Google PID or EzShuttle EzPID |
+| `destinationPlaceId` | string | ✓ | Google PID or EzShuttle EzPID |
+| `vehicleType` | int | ✓ | Vehicle type code |
+| `numberOfPassengers` | int | ✓ | Number of passengers (min=1, max=13) |
+| `includeBabySeat` | bool | ✓ | Baby seat required |
+| `includeTrailer` | bool | ✓ | Trailer required |
+| `returnPickupDateTime` | DateTime | - | Return trip datetime (optional) |
 
-Response Body 
+### Response
+**Headers**: `Content-Type: text/plain`  
+**Body**: `500000` (Amount in ZAR cents - R500.00 in this example)
 
-500000
+### Recommended Vehicle Type Codes
+| Code | Capacity | Description |
+|------|----------|-------------|
+| 1 | 3 pax | Sedan |
+| 3 | 9 pax | Minibus 9 pax |
+| 4 | 13 pax | Minibus 13 pax |
 
-Response is the quoted amount in ZAR cents. Above quote is therefore R 500.00
+> **📌 Note**: Vehicle types can be retrieved dynamically from:  
+> `https://api.ezshuttle.co.za/ezx/quote/api/VehicleType` (includes thumbnails)
 
-Recommended Type Codes 
-1 (3 pax) - sedan 
-3 (9 pax) - minibus 9 pax
-4 (13 pax) - minibus 13 pax
+---
 
-Types can be pulled dynamically from: https://api.ezshuttle.co.za/ezx/quote/api/VehicleType
-The results include vehicle thumbnails.
+## 5. QuickMultiQuotes
 
-# 5 QuickMultiQuotes
+Get quotes for multiple vehicle types in a single request.
 
-Request
+**Endpoint**: `GET /QuickMultiQuotes/get`  
+**Headers**: `Content-Type: application/json`
 
-* Http Verb: GET
-* Headers: Content-Type: application/json
-* Http EndPoint: /QuickMultiQuotes/get
-* QueryString Parameters:
+### QueryString Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `pickupDateTime` | DateTime | ✓ | UTC DateTime (timezone info stripped)<br/>Format: `2025-07-29T07:00:00` |
+| `pickupPlaceId` | string | ✓ | Google PID or EzShuttle EzPID |
+| `destinationPlaceId` | string | ✓ | Google PID or EzShuttle EzPID |
+| `numberOfPassengers` | int | ✓ | Number of passengers (min=1, max=13) |
+| `includeBabySeat` | bool | ✓ | Baby seat required |
+| `includeTrailer` | bool | ✓ | Trailer required |
+| `returnPickupDateTime` | DateTime | - | Return trip datetime (optional) |
+| `includeAvailabilityCheck` | bool | - | Conduct availability check (default: false) |
 
-* pickupDateTime: 2019-07-29T07:00:00  (UTC DateTime - required. Any TimeZone/Offset information passed will be stripped from request)
-* pickupPlaceId: ChIJwymiBTgUlR4R1iEoeUAcv7M  (string - Google PID OR EzShuttle EzPID - required)
-* destinationPlaceId: ChIJ3XLuZMcPlR4RXSWvBLcK5o8  (string - Google PID OR EzShuttle EzPID - required)
-* numberOfPassengers: 1  (int - Pax, min=1;max=13 - required)
-* includeBabySeat: false  (bool - BabySeat is requested - required)
-* includeTrailer: false (bool - Trailer is requested - required)
-* returnPickupDateTime: 2019-08-19T08:00:00.000Z (datetime - If NULL reservation is one way only - optional)
-* includeAvailabilityCheck: true (if true then an availability check will be conducted. Default is false if not specified)
-
-Response Body 
+### Response
 ```json
 [
     {
@@ -149,89 +170,82 @@ Response Body
         "CancelBillableDeadlineMinutes": 120,
         "IsAvailableForOnlinebookingPrimary": true,
         "IsAvailableForOnlinebookingReturn": true
-    },
-    {
-        "PrimaryTripQuoteId": "b4dec742-2ffd-499c-8f0b-0a2ab63a32d3",
-        "ReturnTripQuoteId": "291bb893-e084-4fd0-a0ec-b0b915a9bca5",
-        "TotalAmountInCents": 105000,
-        "VehicleTypeId": 2,
-        "VehicleTypeName": "Business - Sedan (3 seater)",
-        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/",
-        "CancelAllowedDeadlineMinutes": 30,
-        "CancelBillableDeadlineMinutes": 120,
-        "IsAvailableForOnlinebookingPrimary": true,
-        "IsAvailableForOnlinebookingReturn": true
-    },
-    {
-        "PrimaryTripQuoteId": "ed0cee4e-dd9c-4604-a11c-88845310c227",
-        "ReturnTripQuoteId": "d37b3d87-1e33-4063-85df-1a2354e7e2d5",
-        "TotalAmountInCents": 106000,
-        "VehicleTypeId": 3,
-        "VehicleTypeName": "Comfort - Van (9 seater)",
-        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/",
-        "CancelAllowedDeadlineMinutes": 30,
-        "CancelBillableDeadlineMinutes": 120,
-        "IsAvailableForOnlinebookingPrimary": true,
-        "IsAvailableForOnlinebookingReturn": true
-    },
-    {
-        "PrimaryTripQuoteId": "1110f22d-4a7f-4e30-b2b9-5975aed48c0d",
-        "ReturnTripQuoteId": "90996938-303c-4398-ad53-154ac2b308ce",
-        "TotalAmountInCents": 106000,
-        "VehicleTypeId": 4,
-        "VehicleTypeName": "Comfort - Minibus (13 seater)",
-        "TermsAndConditionsUrl": "https://www.ezshuttle.co.za/faq/",
-        "CancelAllowedDeadlineMinutes": 30,
-        "CancelBillableDeadlineMinutes": 120,
-        "IsAvailableForOnlinebookingPrimary": true,
-        "IsAvailableForOnlinebookingReturn": true
     }
 ]
 ```
 
-# 6 QuickBookings (Create)
+---
 
-Http Verb: POST
-Http EndPoint: /QuickBookings/post
-Headers: Content-Type: application/json
-Json Body Content:
+## 6. QuickBookings (Create)
+
+Create a new booking reservation.
+
+**Endpoint**: `POST /QuickBookings/post`  
+**Headers**: `Content-Type: application/json`
+
+### Request Body
 ```json
 {
-  "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",       // (string - Google PID OR EzShuttle EzPID - required) 
-  "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",  // (string - Google PID OR EzShuttle EzPID - required) 
-  "PickupDisplayAddress": "",                           // (string - Additional address description to be appended to Google/LocationFinder address - optional) 
-  "DestinationDisplayAdadress": "entrance 4",           // (string - Additional address description to be appended to Google/LocationFinder address - optional) 
-  "PickupFlightNumber": "FLTEST",                       // (string - Compulsory if pickup is an airport - optional, on condition) 
-  "ReturnPickupFlightNumber": null,                     // (string - Compulsory if pickup is an airport on return trip - optional, on condition) 
-  "PickupDateTime": "2019-07-28T07:00:00",              // (UTC DateTime - required.Timezone/Offset will be stripped from request) e.g for 9:00AM local time pickup : 2019-07-28T07:00:00
-  "ReturnPickupDateTime": null,                         // (datetime UTC - If NULL reservation is one way only - optional) 
-  "NumberOfPassengers": 1,                              // (int - Pax, min=1;max=13 - required) 
-  "VehicleType": 1,                                     // (int - TypeCode - required) 
-  "IncludeBabySeat": false,                             // (bool - BabySeat is requested - required) 
-  "IncludeTrailer": false,                              // (bool - Trailer is requested - required) 
-  "SpecialInstructions": null,                          // (string - Special Instructions - optional) 
-  "PaymentMethod": 4,                                   // (int - TypeCode 4 = Account - required) 
-  "Name": "Richard",                                    // (string - Passenger FirstName - required) 
-  "Surname": "McIntyre",                                // (string - Passenger Surname - required) 
-  "Cell": "+27722939392",                               // (string - Passenger Mobile, single MSISDN in international format - required) 
-  "Email": "richard@mailinator.com",                    // (string - Passenger Email, single valid email address - required)
-  "PurchaseOrder": "POTEST",                            // (string - Client Defined PurchaseOrder - optional)
-  "CostCentre": "COTEST",                               // (string - Special Instructions - optional) 
-  "ClientReservationId": "PR884526"                     // (string - Client Defined System Reference - optional but highly recommended. Should be unique) 
+  "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",
+  "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",
+  "PickupDisplayAddress": "",
+  "DestinationDisplayAdadress": "entrance 4",
+  "PickupFlightNumber": "FLTEST",
+  "ReturnPickupFlightNumber": null,
+  "PickupDateTime": "2025-07-28T07:00:00",
+  "ReturnPickupDateTime": null,
+  "NumberOfPassengers": 1,
+  "VehicleType": 1,
+  "IncludeBabySeat": false,
+  "IncludeTrailer": false,
+  "SpecialInstructions": null,
+  "PaymentMethod": 4,
+  "Name": "Richard",
+  "Surname": "McIntyre",
+  "Cell": "+27722939392",
+  "Email": "richard@mailinator.com",
+  "PurchaseOrder": "POTEST",
+  "CostCentre": "COTEST",
+  "ClientReservationId": "PR884526"
 }
 ```
 
-Response
+### Field Descriptions
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `PickupPlaceId` | string | ✓ | Google PID or EzShuttle EzPID |
+| `DestinationPlaceId` | string | ✓ | Google PID or EzShuttle EzPID |
+| `PickupDisplayAddress` | string | - | Additional address description |
+| `DestinationDisplayAdadress` | string | - | Additional address description |
+| `PickupFlightNumber` | string | Conditional | Required if pickup is an airport |
+| `ReturnPickupFlightNumber` | string | Conditional | Required if return pickup is an airport |
+| `PickupDateTime` | DateTime | ✓ | UTC DateTime (timezone stripped) |
+| `ReturnPickupDateTime` | DateTime | - | Return trip datetime |
+| `NumberOfPassengers` | int | ✓ | Passengers (min=1, max=13) |
+| `VehicleType` | int | ✓ | Vehicle type code |
+| `IncludeBabySeat` | bool | ✓ | Baby seat required |
+| `IncludeTrailer` | bool | ✓ | Trailer required |
+| `SpecialInstructions` | string | - | Special instructions |
+| `PaymentMethod` | int | ✓ | Payment method (4 = Account) |
+| `Name` | string | ✓ | Passenger first name |
+| `Surname` | string | ✓ | Passenger surname |
+| `Cell` | string | ✓ | Mobile in international format |
+| `Email` | string | ✓ | Valid email address |
+| `PurchaseOrder` | string | - | Client-defined purchase order |
+| `CostCentre` | string | - | Cost centre |
+| `ClientReservationId` | string | Recommended | Unique client reference |
+
+### Response
 ```json
 {
-    "ReferenceId": 884526,                                  // (int - EzShuttle ReferenceId)
+    "ReferenceId": 884526,
     "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",
     "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",
     "PickupDisplayAddress": "",
     "DestinationDisplayAddress": "entrance 4",
     "PickupFlightNumber": "FLTEST",
     "ReturnPickupFlightNumber": "",
-    "PickupDateTime": "2019-07-28T07:00:00",
+    "PickupDateTime": "2025-07-28T07:00:00",
     "ReturnPickupDateTime": null,
     "NumberOfPassengers": 1,
     "VehicleType": 1,
@@ -250,39 +264,51 @@ Response
     "ClientReservationId": "PR884526"
 }
 ```
-# 7 QuickBookings (Cancel)
-* Http Verb: DELETE
-* Headers: Content-Type: application/json
-* Http EndPoint: /QuickBookings/delete
-* QueryString Parameters:
 
-* reference: (int - EzShuttle Reference)
+---
 
-Response
+## 7. QuickBookings (Cancel)
 
-Http 200-OK
+Cancel an existing booking.
+
+**Endpoint**: `DELETE /QuickBookings/delete`  
+**Headers**: `Content-Type: application/json`
+
+### QueryString Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `reference` | int | ✓ | EzShuttle reference ID |
+
+### Response
+```
 Reservation Has Been Deleted For Id = 123456
+```
 
-# 8 QuickBookings (Get)
-* Http Verb: GET
-* Headers: Content-Type: application/json
-* Http EndPoint: /QuickBookings/get
-* QueryString Parameters:
+---
 
-* reference: (int - EzShuttle Reference)
+## 8. QuickBookings (Get)
 
-Response
+Retrieve booking details.
 
+**Endpoint**: `GET /QuickBookings/get`  
+**Headers**: `Content-Type: application/json`
+
+### QueryString Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `reference` | int | ✓ | EzShuttle reference ID |
+
+### Response
 ```json
 {
-    "ReferenceId": 884526,                                  // (int - EzShuttle ReferenceId)
+    "ReferenceId": 884526,
     "PickupPlaceId": "ChIJwymiBTgUlR4R1iEoeUAcv7M",
     "DestinationPlaceId": "ChIJ3XLuZMcPlR4RXSWvBLcK5o8",
     "PickupDisplayAddress": "",
     "DestinationDisplayAddress": "entrance 4",
     "PickupFlightNumber": "FLTEST",
     "ReturnPickupFlightNumber": "",
-    "PickupDateTime": "2019-07-28T07:00:00",
+    "PickupDateTime": "2025-07-28T07:00:00",
     "ReturnPickupDateTime": null,
     "NumberOfPassengers": 1,
     "VehicleType": 1,
@@ -301,69 +327,83 @@ Response
     "ClientReservationId": "PR884526"
 }
 ```
-# 9 QuickConfirmations 
 
-* Http Verb: GET
-* Http EndPoint: /QuickConfirmations/get?reference={reference}
-* Response Headers: Content-Type: application/pdf
+---
 
-Response
+## 9. QuickConfirmations
 
-PDF-FILE 
+Get a PDF confirmation for a booking.
 
-# 10 UpdatePurchaseOrderRequest 
+**Endpoint**: `GET /QuickConfirmations/get?reference={reference}`  
+**Response Headers**: `Content-Type: application/pdf`
 
-Http Verb: POST
-Http EndPoint: /UpdatePurchaseOrderRequest
-Headers: Content-Type: application/json
-Json Body Content:
+### Response
+Returns a PDF file containing the booking confirmation.
+
+---
+
+## 10. UpdatePurchaseOrderRequest
+
+Update the purchase order for an existing booking.
+
+**Endpoint**: `POST /UpdatePurchaseOrderRequest`  
+**Headers**: `Content-Type: application/json`
+
+### Request Body
 ```json
 {
-	"ReferenceId": 884526,
-	"PurchaseOrder": "UpdatedPO"
+    "ReferenceId": 884526,
+    "PurchaseOrder": "UpdatedPO"
 }
 ```
 
-Response
-
+### Response
+```
 True
+```
 
-# 11 QuickClientReferenceLookup
+---
 
-* Http Verb: GET
-* Http EndPoint: /QuickClientReferenceLookup/get/{clientReservationId}?fields={fieldsParameters}
-* Response Headers: Content-Type: application/json
+## 11. QuickClientReferenceLookup
 
-Response Body 
+Look up bookings by client reference ID.
 
+**Endpoint**: `GET /QuickClientReferenceLookup/get/{clientReservationId}?fields={fieldsParameters}`  
+**Headers**: `Content-Type: application/json`
+
+### URL/QueryString Parameters
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `clientReservationId` | string | ✓ | Client-defined reference from booking |
+| `fields` | string | ✓ | Comma-separated field names to return |
+
+### Supported Fields
+- `RefReservationId`
+- `RefTripId` 
+- `TripPnr`
+
+### Response
 ```json
 [
-	{
-		"RefReservationId": xxxxxx,
-		"RefTripId": xxxxxx,
-		"TripPnr": "TRIP_PNR"
-	}
+    {
+        "RefReservationId": 123456,
+        "RefTripId": 789012,
+        "TripPnr": "TRIP_PNR"
+    }
 ]
 ```
 
-Where 'RefReservationId' xxxxxx is the booking ReferenceId (int), fieldsParameters is value would like to be in the Response and it can be from following.
-1. RefReservationId
-2. RefTripId
-3. TripPnr
-   
-Note: Response would only contains fields which is send in the request fields parameter.   
+> **⚠️ Important Notes**:
+> - Response contains only requested fields
+> - Returns HTTP 404 if not found
+> - Use this endpoint to confirm booking creation after timeout
+> - Ensure `ClientReservationId` is unique
 
-ClientReservationId should match the client defined reference passed into QuickBookings-Create.
+---
 
-If not found an HTTP-404 response will be returned.
+## 12. Error Codes
 
-It is highly recommended that the client application call this endpoint should a timeout occur during the booking process in order to confirm if a reservation was successfully created. 
-
-It is the responsibility of the client application to ensure that the ClientReservationId provided during the booking process is unique, as this endpoint will simply return the first booking it finds with the provided ClientReservationId.
-
-# 12 Error Codes 
-
-In the case of an error an HTTP 400 error code will be returned wth the error detail in the body. For example:
+Errors return HTTP 400 with error details in the response body:
 
 ```json
 {
@@ -373,114 +413,115 @@ In the case of an error an HTTP 400 error code will be returned wth the error de
 }
 ```
 
-Please examine the errorCode field to obtain the EzShuttle api error as per table below:
+### Validation Errors (40-99, 300)
+| Code | Error | Description |
+|------|-------|-------------|
+| 46 | SMSOrEmailNotificationFailure | - |
+| 47 | BlockTripLuxuryVehicle | - |
+| 48 | BlockTripOver3Passengers | - |
+| 49 | BlockTripUnder4Passengers | - |
+| 50 | BlockTrip | - |
+| 51 | DestinationDestionationTrip | - |
+| 52 | VehicleTypeUnknown | - |
+| 53 | Trip24Hours | - |
+| 54 | NoDropOff | - |
+| 55 | NoPickup | - |
+| 56 | NoPassenger | - |
+| 57 | ParentClientInvalid | - |
+| 58 | ParentClientBooking | - |
+| 59 | InvalidClientPassenger | - |
+| 60 | PassengerNotFound | - |
+| 61 | ClientNotFound | - |
+| 62 | ReservationIdNotNull | - |
+| 63 | ReservationIsNull | - |
+| 64 | ReservationClientNoLongerExist | - |
+| 65 | ReservationNotFound | - |
+| 66 | ReservationIdNullOrZero | - |
+| 67 | NotificationTypeNotSpecified | - |
+| 68 | QuoteConvertedAlreadyOrNotFound | - |
+| 69 | TripTimeInvalid | - |
+| 70 | PickupTimeIsNull | - |
+| 71 | SuburbsOfficesInvalid | - |
+| 72 | PricePlanNotFound | - |
+| 73 | DestinationInvalid | - |
+| 74 | SuburbInvalid | - |
+| 75 | SuburbDestinationOfficesInvalid | - |
+| 76 | NoAddressSpecified | - |
+| 77 | UnauthorizedVehicleType | - |
+| 78 | CancellationDeadlineExpired | - |
+| 79 | AdhocTripsInternalError | - |
+| 80 | CannotCancelPaidTrip | - |
+| 81 | ReservationPaymentNotCreditCard | - |
+| 82 | TripOutOfRangeOfOffice | - |
+| 83 | TripOnlineDeadline | - |
+| 84 | JhbPtaSuburbToSuburbNotSupported | - |
+| 85 | SuburbOrDestinationNotFound | - |
+| 86 | TrailerRequiresAdditionalPax | - |
+| 94 | QuoteNotAvailable | - |
+| 98 | GeneralValidationError | - |
+| 300 | MultiTripReservationNotSupported | - |
 
+### General Errors (99-1000)
+| Code | Error | Description |
+|------|-------|-------------|
+| 99 | GeneralError | - |
+| 100 | Unauthorized | - |
+| 101 | InternalServerError | - |
+| 102 | ResourceNotFound | - |
+| 1000 | AccountBlocked | - |
 
-# Error: Validation
+### Process Errors (200-300)
+| Code | Error | Description |
+|------|-------|-------------|
+| 200 | ErrorSendingSMSOrEmailNotification | - |
+| 300 | ErrorProcessingPayment | - |
 
- * SMSOrEmailNotificationFailure = 46,
- * BlockTripLuxuryVehicle = 47,
- * BlockTripOver3Passengers = 48,
- * BlockTripUnder4Passengers = 49,
- * BlockTrip = 50,
- * DestinationDestionationTrip = 51,
- * VehicleTypeUnknown = 52,
- * Trip24Hours = 53,
- * NoDropOff = 54,
- * NoPickup = 55,
- * NoPassenger = 56,
- * ParentClientInvalid = 57,
- * ParentClientBooking = 58,
- * InvalidClientPassenger = 59,
- * PassengerNotFound = 60,
- * ClientNotFound = 61,
- * ReservationIdNotNull = 62,
- * ReservationIsNull = 63,
- * ReservationClientNoLongerExist = 64,
- * ReservationNotFound= 65,
- * ReservationIdNullOrZero = 66,
- * NotificationTypeNotSpecified = 67,
- * QuoteConvertedAlreadyOrNotFound = 68,
- * TripTimeInvalid = 69,
- * PickupTimeIsNull = 70,
- * SuburbsOfficesInvalid = 71,
- * PricePlanNotFound = 72,
- * DestinationInvalid = 73,
- * SuburbInvalid = 74,
- * SuburbDestinationOfficesInvalid = 75,
- * NoAddressSpecified = 76,
- * UnauthorizedVehicleType = 77,
- * CancellationDeadlineExpired=78,
- * AdhocTripsInternalError=79,
- * CannotCancelPaidTrip = 80,
- * ReservationPaymentNotCreditCard = 81,
- * TripOutOfRangeOfOffice = 82,
- * TripOnlineDeadline = 83,
- * JhbPtaSuburbToSuburbNotSupported = 84,
- * SuburbOrDestinationNotFound = 85,
- * TrailerRequiresAdditionalPax = 86,
- * QuoteNotAvailable = 94,
- * GeneralValidationError = 98,
- * MultiTripReservationNotSupported = 300
+---
 
-# Error: General
+## 13. Webhook
 
-* GeneralError = 99,
-* Unauthorized = 100,
-* InternalServerError = 101,
-* ResourceNotFound = 102,
-* AccountBlocked = 1000
+### Setup
+Contact your account manager to register a webhook URL for real-time trip updates.
 
-# Error: Process
+**Example URL**: `https://www.mytravelcorp.com/api/ez_webhook`
 
-* ErrorSendingSMSOrEmailNotification = 200,
-* ErrorProcessingPayment = 300
-
-# 13 Webhook
-
-It is possible register a webhook so that EzShuttle will push updates to trips booked under your account in real-time. 
-Please contact your account manager and provide them with a url that your environment exposes to be used for this purpose. e.g https://www.mytravelcorp.com/api/ez_webhook
-
-Webhook Message Response Json
-
+### Webhook Message Format
 ```json
 {
     "PNR": "BT7Z5YR0",
     "UpdateTypeId": 1, 
-    "PickupDT": "2019-11-07T17:00:00Z",
+    "PickupDT": "2025-11-07T17:00:00Z",
     "PickupDisplay": "Cape Town International Airport",
     "DropOffDisplay": "aha Harbour Bridge Hotel & Suites",
     "PriceInCents": 330000,
     "DriverName": "Tom Smith",
-    "DriverEta": "2019-11-07T16:48:00Z",
+    "DriverEta": "2025-11-07T16:48:00Z",
     "DriverPositionLat": -33.810322,
     "DriverPositionLon": 18.497749,
     "IsCancelled": false,
-    "MessageCreateDT": "2019-11-07T16:48:00Z"
+    "MessageCreateDT": "2025-11-07T16:48:00Z"
 }
 ```
 
-#### Supported update-type codes
+### Update Type Codes
+| Code | Type | Description |
+|------|------|-------------|
+| 1 | **Create** | New booking created |
+| 2 | **PickupTimeChanged** | Pickup time modified |
+| 3 | **PickupDropOffLocationChanged** | Location changed |
+| 4 | **DriverNameChanged** | Driver assigned (≤3 hours before trip) |
+| 5 | **DriverEtaChanged** | Driver ETA updated |
+| 6 | **DriverLocationChanged** | Driver position updated (trip in progress) |
+| 9 | **Cancelled** | Trip cancelled |
+| 10 | **Driver5MinuteArrivalAlarm** | Driver <5 minutes from pickup |
+| 11 | **TripEndEtaChanged** | Trip end ETA changed |
 
-- Update Type Code (UpdateTypeId)
+### Currently Supported Updates
 
-    1 = **Create**    
-    2 = **PickupTimeChanged**    
-    3 = **PickupDropOffLocationChanged**    
-    4 = **DriverNameChanged**    
-    5 = **DriverEtaChanged**    
-    6 = **DriverLocationChanged**   
-    9 = **Cancelled**    
-    10 = **Driver5MinuteArrivalAlarm**   
-    11 = **TripEndEtaChanged**    
+1. **DriverNameChanged**: Driver assigned to trip (occurs ≤3 hours before pickup)
+2. **DriverLocationChanged**: Trip in progress (driver en route to pickup or drop-off)
+3. **Driver5MinuteArrivalAlarm**: Driver less than 5 minutes from pickup point
 
-- Update Type Code Description *(Types currently Supported)*
+---
 
-1. DriverNameChanged: <br/>
-    _A driver has been assigned to this trip. This notification will occur no earlier than 3 hours before the trip._
-
-1. DriverLocationChanged: <br/>
-    _A trip which is currently in progress (Driver is en route to pickup point OR en route to drop off point)_
-
-2. Driver5MinuteArrivalAlarm: <br/>
-    _Driver is less tha 5 minutes from the pickup point_
+*For technical support and account management, please contact your EzShuttle account manager.*
