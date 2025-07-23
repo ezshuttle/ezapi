@@ -1,20 +1,25 @@
-# EzShuttle QuickBookings API v2.0
+### EzShuttle QuickBookings API v2.0
 
-Sections
+### 📘 Table of Contents
 
-1. Base API Url
-2. Authorization
-3. LocationFinder
-4. QuickQuotes
-5. QuickMultiQuotes
-6. QuickBookings (Create)
-7. QuickBookings (Cancel)
-8. QuickBookings (Get)
-9. QuickConfirmations (Get)
-10. UpdatePurchaseOrderRequest
-11. QuickClientReferenceLookup
-12. Error Codes
-13. Webhook
+- [1 Base API Url](#1-base-api-url)
+- [2 Authorization](#2-authorization)
+- [3 LocationFinder](#3-locationfinder)
+- [4 QuickQuotes](#4-quickquotes)
+- [5 QuickMultiQuotes](#5-quickmultiquotes)
+- [6 QuickBookings (Create)](#6-quickbookings-create)
+- [7 QuickBookings (Cancel)](#7-quickbookings-cancel)
+- [8 QuickBookings (Get)](#8-quickbookings-get)
+- [9 QuickConfirmations](#9-quickconfirmations)
+- [10 UpdatePurchaseOrderRequest](#10-updatepurchaseorderrequest)
+- [11 QuickClientReferenceLookup](#11-quickclientreferencelookup)
+- [12 Error Codes](#12-error-codes)
+- [Error: Validation](#error-validation)
+- [Error: General](#error-general)
+- [Error: Process](#error-process)
+- [13 Webhook](#13-webhook)
+      - [Supported update-type codes](#supported-update-type-codes)
+
 
 # 1 Base API Url
 
@@ -29,15 +34,15 @@ Should you not have an account please apply for one by clicking "Want To Open An
 
 # 3 LocationFinder
 
-Our endpoints accept either Google PlaceId's (Google PID - Google Places AutoComplete) or EzShuttle PlaceId's (EzPID - EzShuttle API Placefinder). 
-We recommend the use of EzPID's with our place finder endpoint for the following reasons:
+Our endpoints accept either Google PlaceId's (Google PID - Google Places AutoComplete) or EzShuttle PlaceId's (EzPID - EzShuttle API Placefinder). <br/>
+_We recommend the use of EzPID's with our place finder endpoint for the following reasons:_
 
-a. Automatically filtered to only provide locations which we service.
-b. Built in Handling of IATA codes for airport pickup's / drop offs.
-c. Lower latency for Quote Generation / Reservation Creation.
+a. Automatically filtered to only provide locations which we service.<br/>
+b. Built in Handling of IATA codes for airport pickup's / drop offs.<br/>
+c. Lower latency for Quote Generation / Reservation Creation.<br/>
 
-It is recommended that a library such as https://github.com/TarekRaafat/autoComplete.js is used for the LocationFinder.
-Please see basic working demo (JQUERY) under Samples/LocationFinder
+It is recommended that a library such as [TarekRaafat/autoComplete](https://github.com/TarekRaafat/autoComplete.js) is used for the LocationFinder.<br/>
+Please see basic working demo **(jQuery)** under Samples/LocationFinder
 
 AutoComplete Service
 
@@ -52,7 +57,12 @@ partnerKey: (string - Will be supplied on account creation -required)
 
 Response Json Body
 
-`{"displayName":"Sandton City, Rivonia Road, Sandhurst, Sandton, South Africa","googlePlaceId":"ChIJu6K6ei1zlR4RS3iNn8RaO24"}`
+```json
+{
+    "displayName": "Sandton City, Rivonia Road, Sandhurst, Sandton, South Africa",
+    "googlePlaceId": "ChIJu6K6ei1zlR4RS3iNn8RaO24"
+}
+```
 
 Once the Google PlaceId is obtained it needs to be converted to an EzShuttle PlaceId:
 
@@ -67,7 +77,7 @@ googlePlaceId: (string - Google PlaceId Obtained from AutoComplete Service OR IA
 sessionId: (string - Unique Session Identifier, same as used for AutoComplete Session - required)
 
 IATA Format (Special case for airports - to be passed in as googlePlaceId parameter.) </br>
-`|IATA|*** where *** is the IATA code e.g |IATA|PLZ`
+`|IATA| where it is the IATA code e.g |IATA|PLZ`
 
 Response Body (EzPid - EzShuttle PlaceId)
 
@@ -309,8 +319,8 @@ Headers: Content-Type: application/json
 Json Body Content:
 ```json
 {
-    ReferenceId: 884526
-    PurchaseOrder: "My New PO"
+	"ReferenceId": 884526,
+	"PurchaseOrder": "UpdatedPO"
 }
 ```
 
@@ -322,7 +332,7 @@ True
 
 * Http Verb: GET
 * Http EndPoint: /QuickClientReferenceLookup/get/{clientReservationId}?fields={fieldsParameters}
-* Response Headers: Content-Type: text/plain
+* Response Headers: Content-Type: application/json
 
 Response Body 
 
@@ -331,7 +341,7 @@ Response Body
 	{
 		"RefReservationId": xxxxxx,
 		"RefTripId": xxxxxx,
-        "TripPnr": "TRIP_PNR"
+		"TripPnr": "TRIP_PNR"
 	}
 ]
 ```
@@ -466,12 +476,11 @@ Webhook Message Response Json
 
 - Update Type Code Description *(Types currently Supported)*
 
-1. DriverNameChanged
-   A driver has been assigned to this trip. This notification will occur no earlier than 3 hours before the trip.
+1. DriverNameChanged: <br/>
+    _A driver has been assigned to this trip. This notification will occur no earlier than 3 hours before the trip._
 
-2. DriverLocationChanged
-    A trip which is currently in progress (Driver is en route to pickup point OR en route to drop off point) 
+1. DriverLocationChanged: <br/>
+    _A trip which is currently in progress (Driver is en route to pickup point OR en route to drop off point)_
 
-3. Driver5MinuteArrivalAlarm
-   Driver is less tha 5 minutes from the pickup point
-
+2. Driver5MinuteArrivalAlarm: <br/>
+    _Driver is less tha 5 minutes from the pickup point_
