@@ -368,36 +368,28 @@ True
 
 Look up bookings by client reference ID.
 
-**Endpoint**: `GET /QuickClientReferenceLookup/get/{clientReservationId}?fields={fieldsParameters}`  
-**Headers**: `Content-Type: application/json`
+**Endpoint**: `GET /QuickClientReferenceLookup/get/{clientReservationId}`  
 
 ### URL/QueryString Parameters
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `clientReservationId` | string | ✓ | Client-defined reference from booking |
-| `fields` | string | ✓ | Comma-separated field names to return |
 
-### Supported Fields
-- `RefReservationId`
-- `RefTripId` 
-- `TripPnr`
 
 ### Response
-```json
-[
-    {
-        "RefReservationId": 123456,
-        "RefTripId": 789012,
-        "TripPnr": "TRIP_PNR"
-    }
-]
+```
+Comma Delimited String containing all ReservationId's found matching ClientReferenceId
+"123456"
+
+OR
+
+"123456,789777,876666"
 ```
 
 > **⚠️ Important Notes**:
-> - Response contains only requested fields
 > - Returns HTTP 404 if not found
 > - Use this endpoint to confirm booking creation after timeout
-> - Ensure `ClientReservationId` is unique
+> - Ensure `ClientReservationId` is unique when creating a reservation
 
 ---
 
