@@ -366,7 +366,7 @@ True
 
 ## 11. QuickClientReferenceLookup
 
-Look up bookings by client reference ID.
+Look up bookings by client reference ID. Please use this function when a timeout on create trip occurs, to determine if the trip was created.
 
 **Endpoint**: `GET /QuickClientReferenceLookup/get/{clientReservationId}`  
 
