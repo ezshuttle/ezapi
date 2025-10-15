@@ -449,6 +449,7 @@ Errors return HTTP 400 with error details in the response body:
 | 84 | JhbPtaSuburbToSuburbNotSupported | - |
 | 85 | SuburbOrDestinationNotFound | - |
 | 86 | TrailerRequiresAdditionalPax | - |
+| 92 | CancelTripLimitExceeded | - |
 | 94 | QuoteNotAvailable | - |
 | 98 | GeneralValidationError | - |
 | 300 | MultiTripReservationNotSupported | - |
