@@ -1,4 +1,4 @@
-# EzShuttle QuickBookings API v2.0
+# EzShuttle QuickBookings API v2.1
 
 ## 📋 Table of Contents
 
@@ -481,40 +481,56 @@ Contact your account manager to register a webhook URL for real-time trip update
 ### Webhook Message Format
 ```json
 {
-    "PNR": "BT7Z5YR0",
-    "UpdateTypeId": 1, 
-    "PickupDT": "2025-11-07T17:00:00Z",
-    "PickupDisplay": "Cape Town International Airport",
-    "DropOffDisplay": "aha Harbour Bridge Hotel & Suites",
-    "PriceInCents": 330000,
-    "DriverName": "Tom Smith",
-    "DriverEta": "2025-11-07T16:48:00Z",
-    "DriverPositionLat": -33.810322,
-    "DriverPositionLon": 18.497749,
-    "IsCancelled": false,
-    "MessageCreateDT": "2025-11-07T16:48:00Z"
+  "PNR": "T0M7CRU50",
+  "UpdateTypeId": 6,
+  "PickupDateTime": "2026-06-04T19:30:00Z",
+  "PickupDisplayAddress": "Cape Town International Airport",
+  "DropOffDisplayAddress": "Taj Hotel & Suites",
+  "PriceInCents": 9990000,
+  "DriverName": "Tom Cruise",
+  "DriverEta": "2026-06-04T19:28:00Z",
+  "DriverPositionLatitude": -33.918861,
+  "DriverPositionLongitude": 18.423300,
+  "TripProgressPercentage": 0.50,
+  "PreviousTripStatus": "OnRoute",
+  "TripStatus": "OnRoute",
+  "VehicleRegistration": "CA T0M-CR5",
+  "VehicleDescription": "Bugatti Veyron (Black)",
+  "IsCancelled": false,
+  "MessageCreatedDateTimeUtc": "2026-06-04T19:15:30Z"
 }
 ```
 
-### Update Type Codes
-| Code | Type | Description |
-|------|------|-------------|
-| 1 | **Create** | New booking created |
-| 2 | **PickupTimeChanged** | Pickup time modified |
-| 3 | **PickupDropOffLocationChanged** | Location changed |
-| 4 | **DriverNameChanged** | Driver assigned (≤3 hours before trip) |
-| 5 | **DriverEtaChanged** | Driver ETA updated |
-| 6 | **DriverLocationChanged** | Driver position updated (trip in progress) |
-| 9 | **Cancelled** | Trip cancelled |
-| 10 | **Driver5MinuteArrivalAlarm** | Driver <5 minutes from pickup |
-| 11 | **TripEndEtaChanged** | Trip end ETA changed |
+### Understanding the `UpdateTypeId` field
 
-### Currently Supported Updates
+The `"UpdateTypeId"` integer property in the webhook payload maps to the following status change event types:
 
-1. **DriverNameChanged**: Driver assigned to trip (occurs ≤3 hours before pickup)
-2. **DriverLocationChanged**: Trip in progress (driver en route to pickup or drop-off)
-3. **Driver5MinuteArrivalAlarm**: Driver less than 5 minutes from pickup point
+| `UpdateTypeId` Value | Enum Name | Description |
+| :---: | :--- | :--- |
+| **1** | **Create** | New booking created |
+| **2** | **PickupTimeChanged** | Pickup date or time modified |
+| **3** | **PickupDropOffLocationChanged** | Pickup or drop-off location modified |
+| **4** | **DriverNameChanged** | Driver assigned (typically ≤3 hours before trip) |
+| **5** | **DriverEtaChanged** | Driver ETA updated |
+| **6** | **DriverLocationChanged** | Driver position updated (trip is in progress) |
+| **9** | **Cancelled** | Trip cancelled (supports cancellation without assigned driver) |
+| **10** | **Driver5MinuteArrivalAlarm** | Driver is less than 5 minutes away from the pickup point |
+| **11** | **TripEndEtaChange** | Trip end ETA changed |
+| **12** | **TripProgressChanged** | Progress percentage updated (General client group `*` only) |
+| **13** | **TripStatusChanged** | Status updated (General client group `*` only) |
 
 ---
 
-*For technical support and account management, please contact your EzShuttle account manager.*
+### Currently Supported Updates via Webhook
+
+Our system publishes messages for **all of the following update events**:
+
+1. **Create** (1) - Triggered when a new trip booking is successfully created.
+2. **PickupTimeChanged** (2) - Triggered when a trip's pickup time is updated.
+3. **PickupDropOffLocationChanged** (3) - Triggered when a trip's destination drop-off location changes.
+4. **DriverNameChanged** (4) - Triggered when a driver is assigned or reassigned to a trip.
+5. **DriverEtaChanged** (5) - Triggered when the driver's ETA updates during routing.
+6. **DriverLocationChanged** (6) - Triggered when the driver's GPS location updates while on route or on trip.
+7. **Cancelled** (9) - Triggered when the client cancels the trip (now supports unassigned trips as well).
+8. **Driver5MinuteArrivalAlarm** (10) - Triggered when the driver is within 5 minutes of arrival.
+9. **TripEndEtaChange** (11) - Triggered when the estimated trip completion time updates.
