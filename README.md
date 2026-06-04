@@ -534,3 +534,7 @@ Our system publishes messages for **all of the following update events**:
 7. **Cancelled** (9) - Triggered when the client cancels the trip (now supports unassigned trips as well).
 8. **Driver5MinuteArrivalAlarm** (10) - Triggered when the driver is within 5 minutes of arrival.
 9. **TripEndEtaChange** (11) - Triggered when the estimated trip completion time updates.
+
+---
+
+*For technical support and account management, please contact your EzShuttle account manager.*
